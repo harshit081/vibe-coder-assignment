@@ -22,7 +22,7 @@
 | # | Task | Status | Notes |
 |---|------|--------|-------|
 | 1 | Find and fix bugs / quality issues | Done | B1–B10 resolved (see changelog) |
-| 2 | Redesign UI/UX | Not started | Current UI is minimal starter layout |
+| 2 | Redesign UI/UX | Done | Dark showoff theme, platform colors, Wikipedia heroes |
 | 3 | Zustand state management | Done | `selectedListStore` with localStorage persist |
 | 4 | Select profile & Add to List | Done | Add, dedupe, view, remove, reorder, persist |
 | 5 | Improve code quality & structure | Not started | |
@@ -153,6 +153,56 @@ _Document deliberate compromises here._
 
 Newest entries first.
 
+### 2026-06-30 — Search screen full-width redesign
+
+**Layout**
+- Removed cramped sidebar-from-Layout pattern on discovery page
+- Full-viewport layout: sticky header + edge-to-edge grid
+- Roster moved to slide-over drawer (`RosterDrawer`) — grid uses 100% width
+
+**Header**
+- Single compact bar: logo | centered search | roster button with badge
+- Platform switcher as segmented control below header (not stacked blocks)
+
+**Cards**
+- Poster-style tiles: image hero, gradient overlay, inline stats row
+- Responsive grid: 1 → 2 → 3 → 4 columns (`2xl`)
+
+**Verification:** `npm run build` and `npm run lint` pass.
+
+---
+
+### 2026-06-30 — Showoff UI/UX redesign
+
+**Visual system**
+- Dark theme with Syne (display) + DM Sans (body) typography
+- Platform themes: Instagram gradient, YouTube red/black, TikTok cyan/pink
+- Grid background, glassmorphism stat cards, animated discovery cards
+
+**Discovery page (`SearchPage`)**
+- Platform pills with brand gradients and glow
+- Poster-style profile cards in responsive 2-column grid
+- Platform-colored headline accent
+
+**Showcase page (`ProfileDetailPage`)**
+- Full-bleed hero with platform gradient mesh background
+- Wikipedia lead image via REST API (fallback to social avatar)
+- CSS cutout effect: drop-shadow + bottom fade mask on hero portrait
+- Bento stat grid with glass cards
+- Standalone layout (no shared Layout wrapper) for immersive feel
+
+**Shared components**
+- `PlatformBadge`, `StatCard`, `HeroPortrait`, `useHeroPortrait` hook
+- `wikipediaTitles.ts` mapping for all 30 creators
+- Roster panel restyled; platform color strip per list item
+- Add buttons use platform gradient; “In roster” success state
+
+**Note:** True AI background removal not added (heavy WASM bundle); portrait uses Wikipedia high-res + CSS staging. Can add `@imgly/background-removal` later if needed.
+
+**Verification:** `npm run build` and `npm run lint` pass.
+
+---
+
 ### 2026-06-30 — Zustand store & Add to List feature
 
 **Dependencies**
@@ -250,7 +300,7 @@ Newest entries first.
 1. ~~Fix starter bugs (B1–B10).~~
 2. ~~Implement Zustand store with localStorage persistence for selected profiles.~~
 3. ~~Build Add to List UI: add, dedupe, view, remove, optional drag reorder.~~
-4. Full UI/UX redesign (responsive, accessible, polished).
+4. ~~Full UI/UX redesign (responsive, accessible, polished).~~
 5. Refactor structure, consolidate formatters, add memoization where useful.
 6. Update submission `README.md` from this file.
 7. _(Optional)_ Deploy to Vercel / Netlify / GitHub Pages.

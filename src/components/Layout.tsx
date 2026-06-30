@@ -12,25 +12,36 @@ export function Layout({ children, title }: LayoutProps) {
   const selectedCount = useSelectedListCount();
 
   return (
-    <div className="p-4 min-h-screen max-w-7xl mx-auto">
-      <header className="mb-6 border-b pb-4">
-        <div className="flex items-center justify-between gap-4">
-          <Link to="/" className="text-xl font-semibold text-gray-900">
-            Influencer Search
-          </Link>
+    <div className="min-h-screen grid-bg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <header className="flex items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
+          <div>
+            <Link
+              to="/"
+              className="font-display text-xl sm:text-2xl font-bold text-white hover:text-white/80 transition-colors"
+            >
+              Influencer<span className="text-pink-500">Search</span>
+            </Link>
+            {title && (
+              <h1 className="text-lg sm:text-xl text-zinc-400 mt-1 font-body font-medium">
+                {title}
+              </h1>
+            )}
+          </div>
           {selectedCount > 0 && (
-            <span className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
-              {selectedCount} selected
-            </span>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-zinc-300">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              {selectedCount} in roster
+            </div>
           )}
+        </header>
+
+        <div className="flex flex-col xl:flex-row gap-8 items-start">
+          <main className="flex-1 min-w-0 w-full">{children}</main>
+          <aside className="w-full xl:w-[340px] shrink-0 xl:sticky xl:top-6">
+            <SelectedListPanel />
+          </aside>
         </div>
-        {title && <h1 className="text-2xl mt-2">{title}</h1>}
-      </header>
-      <div className="flex flex-col lg:flex-row gap-6 items-start">
-        <main className="flex-1 min-w-0 w-full">{children}</main>
-        <aside className="w-full lg:w-80 shrink-0 lg:sticky lg:top-4">
-          <SelectedListPanel />
-        </aside>
       </div>
     </div>
   );

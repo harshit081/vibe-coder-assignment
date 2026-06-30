@@ -1,25 +1,24 @@
 import type { MouseEvent } from "react";
 import type { Platform, UserProfileSummary } from "@/types";
 import { useSelectedListStore } from "@/store/selectedListStore";
+import { getPlatformTheme } from "@/theme/platformThemes";
 
 interface AddToListButtonProps {
   profile: UserProfileSummary;
   platform: Platform;
   className?: string;
   size?: "sm" | "md";
+  variant?: "default" | "showoff";
 }
-
-const sizeClasses = {
-  sm: "px-3 py-1 text-sm",
-  md: "px-4 py-2 text-sm",
-};
 
 export function AddToListButton({
   profile,
   platform,
   className = "",
   size = "sm",
+  variant = "default",
 }: AddToListButtonProps) {
+  const theme = getPlatformTheme(platform);
   const addProfile = useSelectedListStore((state) => state.addProfile);
   const isSelected = useSelectedListStore((state) =>
     state.isSelected(platform, profile.username)
@@ -32,23 +31,46 @@ export function AddToListButton({
     }
   };
 
+  const sizeClasses =
+    size === "md" ? "px-5 py-2.5 text-sm" : "px-3.5 py-1.5 text-xs";
+
+  if (isSelected) {
+    return (
+      <button
+        type="button"
+        disabled
+        className={`inline-flex items-center gap-1.5 rounded-full font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 cursor-default ${sizeClasses} ${className}`}
+      >
+        <span aria-hidden="true">✓</span> In roster
+      </button>
+    );
+  }
+
+  if (variant === "showoff") {
+    return (
+      <button
+        type="button"
+        onClick={handleClick}
+        className={`inline-flex items-center rounded-full font-semibold text-white shadow-lg transition-transform hover:scale-105 active:scale-95 ${sizeClasses} ${className}`}
+        style={{
+          background: theme.gradient,
+          boxShadow: `0 8px 32px -8px ${theme.glow}`,
+        }}
+      >
+        + Add to roster
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
       onClick={handleClick}
-      disabled={isSelected}
-      aria-label={
-        isSelected
-          ? `${profile.username} is already in your list`
-          : `Add ${profile.username} to list`
-      }
-      className={`rounded font-medium transition-colors ${sizeClasses[size]} ${
-        isSelected
-          ? "bg-green-100 text-green-800 cursor-default"
-          : "bg-gray-900 text-white hover:bg-gray-700 cursor-pointer"
-      } ${className}`}
+      aria-label={`Add ${profile.username} to list`}
+      className={`inline-flex items-center rounded-full font-semibold text-white transition-all hover:opacity-90 active:scale-95 ${sizeClasses} ${className}`}
+      style={{ background: theme.gradient }}
     >
-      {isSelected ? "Added" : "Add to List"}
+      + Add
     </button>
   );
 }
