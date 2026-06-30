@@ -1,0 +1,37 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-selenagomez",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "instagram",
+            "user_id": "460563723",
+            "username": "selenagomez",
+            "url": "https://www.instagram.com/selenagomez/",
+            "picture": "https://imgp.sptds.icu/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDZ%2Fuc3eREMYRmlucP5lauWcQzXOTFjHE%2B9wtHRIjJAev5ownCDBc6aBxuq9xEro2BoJzaduW8w1Ea4dCD8iPmR0gNlJUwVYqIiahjW32e%2BqWA%3D%3D",
+            "fullname": "Selena Gomez",
+            "description": "Artist, entrepreneur, and founder of Rare Beauty.",
+            "is_verified": true,
+            "is_business": true,
+            "is_hidden": false,
+            "followers": 423858150,
+            "posts_count": 848,
+            "engagements": 2588929,
+            "engagement_rate": 0.006108008068265291,
+            "avg_likes": 2381815,
+            "avg_comments": 103557,
+            "avg_views": 0,
+            "account_type": 3,
+            "avg_reels_plays": 8477163
+        }
+    }
+}

@@ -22,12 +22,23 @@ export function filterProfiles(
   profiles: UserProfileSummary[],
   query: string
 ): UserProfileSummary[] {
-  if (!query) return profiles;
+  if (!query.trim()) return profiles;
+  const normalizedQuery = query.trim().toLowerCase();
   return profiles.filter((p) => {
-    const matchUsername = p.username.includes(query);
-    const matchFullname = p.fullname.toLowerCase().includes(query.toLowerCase());
+    const matchUsername = p.username.toLowerCase().includes(normalizedQuery);
+    const matchFullname = p.fullname.toLowerCase().includes(normalizedQuery);
     return matchUsername || matchFullname;
   });
+}
+
+export function findProfileByUsername(
+  username: string,
+  platform: Platform
+): UserProfileSummary | undefined {
+  const normalizedUsername = username.toLowerCase();
+  return extractProfiles(platform).find(
+    (p) => p.username.toLowerCase() === normalizedUsername
+  );
 }
 
 export const PLATFORMS: Platform[] = ["instagram", "youtube", "tiktok"];

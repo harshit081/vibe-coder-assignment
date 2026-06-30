@@ -1,0 +1,35 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-addisonre",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "tiktok",
+            "user_id": "6703550784929793030",
+            "username": "addisonre",
+            "url": "https://www.tiktok.com/share/user/6703550784929793030",
+            "picture": "https://imgp.sptds.icu/v2?9gRRkBbg4nctjMDXek72QaA0lwJ%2B7AvoxtJKlEuzU8RZC78ehYBtaTYOSfFVCKJi%2BDVBhSRyFL08LuSDGfZzLzRZORFHXE6wIKw2XbAJTtO8wwLm%2BzxIE5LHyriJ3N9sS%2FGfIvCb4BWfDz3VLG%2Fwfg%3D%3D",
+            "fullname": "Addison Rae",
+            "description": "Dancer, actress, and content creator.",
+            "is_verified": true,
+            "is_hidden": false,
+            "followers": 88807158,
+            "posts_count": 89,
+            "engagements": 242750,
+            "engagement_rate": 0.002733450832870927,
+            "avg_likes": 223330,
+            "avg_comments": 9710,
+            "avg_views": 7878571,
+            "sec_uid": "MS4wLjABAAAAVjQK614JSGmZVT3EVAiSDfznaBJOVfWPrtqDsQ9YxU368ewQrTyyEOb3OtJb4xCI"
+        }
+    }
+}

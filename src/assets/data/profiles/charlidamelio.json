@@ -1,0 +1,35 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-charlidamelio",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "tiktok",
+            "user_id": "5831967",
+            "username": "charlidamelio",
+            "url": "https://www.tiktok.com/share/user/5831967",
+            "picture": "https://imgp.sptds.icu/v2?9gRRkBbg4nctjMDXek72QaA0lwJ%2B7AvoxtJKlEuzU8RZC78ehYBtaTYOSfFVCKJi4za2qzVm%2FH9o6G3yQ3jYsditWgaR%2FpBaP%2B21gA710j3IIxnSf1wZatdDLC23nhDN",
+            "fullname": "charli d’amelio",
+            "description": "Dancer and content creator.",
+            "is_verified": true,
+            "is_hidden": false,
+            "followers": 155700000,
+            "posts_count": 156,
+            "engagements": 548825,
+            "engagement_rate": 0.003524887604367373,
+            "avg_likes": 504919,
+            "avg_comments": 21953,
+            "avg_views": 12909677,
+            "sec_uid": "MS4wLjABAAAA-VASjiXTh7wDDyXvjk10VFhMWUAoxr8bgfO1kAL1-9s"
+        }
+    }
+}

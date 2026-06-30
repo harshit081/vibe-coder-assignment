@@ -1,0 +1,37 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-kimkardashian",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "instagram",
+            "user_id": "18428658",
+            "username": "kimkardashian",
+            "url": "https://www.instagram.com/kimkardashian/",
+            "picture": "https://imgp.sptds.icu/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDat1QLGClxLKQGAKLBUyw%2BxRSPTS3zhap5xFqJy%2FGpuCFqAvcAlg3BJe7FqSsSJAH1qAu%2Bu%2BgK8ZXpRpOIeWaKjWwq5%2BhsabX0Nc9aXCBbcsw%3D%3D",
+            "fullname": "Kim Kardashian",
+            "description": "SKIMS founder and media personality.",
+            "is_verified": true,
+            "is_business": false,
+            "is_hidden": false,
+            "followers": 360086956,
+            "posts_count": 720,
+            "engagements": 1872594,
+            "engagement_rate": 0.005200393873750872,
+            "avg_likes": 1722786,
+            "avg_comments": 74904,
+            "avg_views": 0,
+            "account_type": 2,
+            "avg_reels_plays": 7201739
+        }
+    }
+}

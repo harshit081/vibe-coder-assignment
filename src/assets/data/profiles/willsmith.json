@@ -1,0 +1,35 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-willsmith",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "tiktok",
+            "user_id": "6727327145951183878",
+            "username": "willsmith",
+            "url": "https://www.tiktok.com/share/user/6727327145951183878",
+            "picture": "https://imgp.sptds.icu/v2?9gRRkBbg4nctjMDXek72QaA0lwJ%2B7AvoxtJKlEuzU8RZC78ehYBtaTYOSfFVCKJikUl7RxRA5xxPd0U8i6n293nRqjnobWsF%2FyRm7mgPYbXYiYBp6H1ot8TA2i12OZMES%2FGfIvCb4BWfDz3VLG%2Fwfg%3D%3D",
+            "fullname": "Will Smith",
+            "description": "Actor, producer, and entertainer.",
+            "is_verified": true,
+            "is_hidden": false,
+            "followers": 75300000,
+            "posts_count": 80,
+            "engagements": 125052,
+            "engagement_rate": 0.0016607171314741037,
+            "avg_likes": 115048,
+            "avg_comments": 5002,
+            "avg_views": 1999533,
+            "sec_uid": "MS4wLjABAAAA8ezUaW4ecJX222ObGXxt07F9BIh4QH3-g1P1DHyChT2LLi2cn-vAE2R53-H672ZO"
+        }
+    }
+}

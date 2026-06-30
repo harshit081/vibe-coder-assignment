@@ -1,0 +1,35 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-zeemusiccompany",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "youtube",
+            "user_id": "UCFFbwnve3yF62-tVXkTyHqg",
+            "username": "zeemusiccompany",
+            "url": "https://www.youtube.com/channel/UCFFbwnve3yF62-tVXkTyHqg",
+            "picture": "https://yt3.googleusercontent.com/5ozNNrQBUJY8TPt2BYo6fEL-07ilkWHVedWCGFjtvuHU0aYrg1Iop-LJvprodA1_9-MTv7G_YA=s480-c-k-c0x00ffffff-no-rj",
+            "fullname": "Zee Music Company",
+            "description": "Bollywood music and entertainment videos.",
+            "is_verified": true,
+            "is_hidden": false,
+            "followers": 111000000,
+            "posts_count": 139,
+            "engagements": 1556,
+            "engagement_rate": 0.000014018018018018018,
+            "avg_likes": 1432,
+            "avg_comments": 62,
+            "avg_views": 150273,
+            "handle": "zeemusiccompany"
+        }
+    }
+}

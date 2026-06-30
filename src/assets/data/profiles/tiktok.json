@@ -1,0 +1,35 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-tiktok",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "tiktok",
+            "user_id": "107955",
+            "username": "tiktok",
+            "url": "https://www.tiktok.com/share/user/107955",
+            "picture": "https://imgp.sptds.icu/v2?9gRRkBbg4nctjMDXek72QaA0lwJ%2B7AvoxtJKlEuzU8RZC78ehYBtaTYOSfFVCKJiF%2BceFGsClPJZBiCwsOoAR%2Fz%2BgLvzqZ8cSTvbaxRbWtrIIxnSf1wZatdDLC23nhDN",
+            "fullname": "TikTok",
+            "description": "Make Your Day — short-form video platform.",
+            "is_verified": true,
+            "is_hidden": false,
+            "followers": 82200000,
+            "posts_count": 82,
+            "engagements": 41761,
+            "engagement_rate": 0.0005080413625304137,
+            "avg_likes": 38420,
+            "avg_comments": 1670,
+            "avg_views": 3475620,
+            "sec_uid": "MS4wLjABAAAAv7iSuuXDJGDvJkmH_vz1qkDZYo1apxgzaxdBSeIuPiM"
+        }
+    }
+}

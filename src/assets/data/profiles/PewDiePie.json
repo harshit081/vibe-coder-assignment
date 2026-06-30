@@ -1,0 +1,35 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-pewdiepie",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "youtube",
+            "user_id": "UC-lHJZR3Gqxm24_Vd_AJ5Yw",
+            "username": "PewDiePie",
+            "url": "https://www.youtube.com/channel/UC-lHJZR3Gqxm24_Vd_AJ5Yw",
+            "picture": "https://yt3.googleusercontent.com/5oUY3tashyxfqsjO5SGhjT4dus8FkN9CsAHwXWISFrdPYii1FudD4ICtLfuCw6-THJsJbgoY=s480-c-k-c0x00ffffff-no-rj",
+            "fullname": "PewDiePie",
+            "description": "Gaming, commentary, and internet culture.",
+            "is_verified": true,
+            "is_hidden": false,
+            "followers": 110000000,
+            "posts_count": 138,
+            "engagements": 144945,
+            "engagement_rate": 0.001317681818181818,
+            "avg_likes": 133349,
+            "avg_comments": 5798,
+            "avg_views": 2629350,
+            "handle": "PewDiePie"
+        }
+    }
+}

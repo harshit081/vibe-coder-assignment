@@ -5,17 +5,15 @@ interface ProfileListProps {
   profiles: UserProfileSummary[];
   platform: Platform;
   searchQuery: string;
-  onProfileClick: (username: string) => void;
 }
 
 export function ProfileList({
   profiles,
   platform,
   searchQuery,
-  onProfileClick,
 }: ProfileListProps) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full max-w-3xl mx-auto">
       {profiles.length === 0 && <p>No profiles found</p>}
       {profiles.map((profile) => (
         <ProfileCard
@@ -23,7 +21,6 @@ export function ProfileList({
           profile={profile}
           platform={platform}
           searchQuery={searchQuery}
-          onProfileClick={onProfileClick}
         />
       ))}
     </div>

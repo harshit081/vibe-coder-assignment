@@ -1,0 +1,37 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-khloekardashian",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "instagram",
+            "user_id": "208560325",
+            "username": "khloekardashian",
+            "url": "https://www.instagram.com/khloekardashian/",
+            "picture": "https://imgp.sptds.icu/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDZ%2Fuc3eREMYRmlucP5lauWcnjQ0S7KjNP24vgc%2FHnZFMZqNZfgPzhaPS4lBvD9StvOVjQQ%2B48HbS1qHLMXZprWlgNlJUwVYqIiahjW32e%2BqWA%3D%3D",
+            "fullname": "Khloé Kardashian",
+            "description": "Television personality and entrepreneur.",
+            "is_verified": true,
+            "is_business": true,
+            "is_hidden": false,
+            "followers": 305952721,
+            "posts_count": 612,
+            "engagements": 123455,
+            "engagement_rate": 0.0004035100573594833,
+            "avg_likes": 113579,
+            "avg_comments": 4938,
+            "avg_views": 0,
+            "account_type": 3,
+            "avg_reels_plays": 6119054
+        }
+    }
+}

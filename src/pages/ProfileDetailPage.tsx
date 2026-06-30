@@ -2,33 +2,50 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
-import type { FullUserProfile, ProfileDetailResponse } from "@/types";
-import { formatEngagementRate } from "@/utils/formatters";
-import { loadProfileByUsername } from "@/utils/profileLoader";
+import type { FullUserProfile, Platform, ProfileDetailResponse } from "@/types";
+import {
+  formatEngagementRate,
+  formatFollowers,
+} from "@/utils/formatters";
+import { isDetailedProfile, loadProfileByUsername } from "@/utils/profileLoader";
 
-function formatFollowersDetail(count: number) {
-  if (count >= 1000000) return (count / 1000000).toFixed(2) + "M";
-  if (count >= 1000) return (count / 1000).toFixed(1) + "K";
-  return String(count);
+const PLATFORMS: Platform[] = ["instagram", "youtube", "tiktok"];
+
+function parsePlatform(value: string | null): Platform | null {
+  if (value && PLATFORMS.includes(value as Platform)) {
+    return value as Platform;
+  }
+  return null;
 }
 
 export function ProfileDetailPage() {
   const { username } = useParams<{ username: string }>();
   const [searchParams] = useSearchParams();
-  const platform = searchParams.get("platform") || "unknown";
+  const platform = parsePlatform(searchParams.get("platform"));
   const [profileData, setProfileData] = useState<ProfileDetailResponse | null>(
     null
   );
-  const [loaded, setLoaded] = useState(false);
+  const [loadedUsername, setLoadedUsername] = useState<string | null>(null);
+  const [hasDetailedData, setHasDetailedData] = useState(false);
 
   useEffect(() => {
     if (!username) return;
 
-    loadProfileByUsername(username).then((data) => {
+    let cancelled = false;
+
+    loadProfileByUsername(username, platform).then((data) => {
+      if (cancelled) return;
       setProfileData(data);
-      setLoaded(true);
+      setLoadedUsername(username);
+      setHasDetailedData(data ? isDetailedProfile(username) : false);
     });
-  }, [username]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [username, platform]);
+
+  const isLoading = loadedUsername !== username;
 
   if (!username) {
     return (
@@ -39,7 +56,7 @@ export function ProfileDetailPage() {
     );
   }
 
-  if (!loaded) {
+  if (isLoading) {
     return (
       <Layout title={`@${username}`}>
         <p className="text-gray-400">Loading...</p>
@@ -68,18 +85,30 @@ export function ProfileDetailPage() {
         ← Back to search
       </Link>
 
-      <div className="flex gap-6 items-start text-left max-w-2xl mx-auto">
+      {!hasDetailedData && (
+        <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-2 mb-4 max-w-2xl mx-auto">
+          Showing summary data from search results. Extended profile details are
+          not available for this creator.
+        </p>
+      )}
+
+      <div className="flex flex-col sm:flex-row gap-6 items-start text-left max-w-2xl mx-auto">
         <img
           src={user.picture}
-          className="w-24 h-24 rounded-full border"
+          alt={`${user.fullname} profile`}
+          className="w-24 h-24 rounded-full border shrink-0"
         />
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <h2 className="text-xl font-bold">
             @{user.username}
             <VerifiedBadge verified={user.is_verified} />
           </h2>
           <p className="text-gray-600">{user.fullname}</p>
-          <p className="text-xs text-gray-400 mt-1">Platform: {platform}</p>
+          {platform && (
+            <p className="text-xs text-gray-400 mt-1 capitalize">
+              Platform: {platform}
+            </p>
+          )}
 
           {user.description && (
             <p className="mt-3 text-sm text-gray-700">{user.description}</p>
@@ -88,16 +117,12 @@ export function ProfileDetailPage() {
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
             <div className="border p-2 rounded">
               <div className="text-gray-500">Followers</div>
-              <div className="font-semibold">
-                {formatFollowersDetail(user.followers)}
-              </div>
+              <div className="font-semibold">{formatFollowers(user.followers)}</div>
             </div>
             <div className="border p-2 rounded">
               <div className="text-gray-500">Engagement Rate</div>
               <div className="font-semibold">
-                {user.engagement_rate !== undefined
-                  ? (user.engagement_rate * 10000).toFixed(2) + "%"
-                  : "N/A"}
+                {formatEngagementRate(user.engagement_rate)}
               </div>
             </div>
             {user.posts_count !== undefined && (
@@ -110,21 +135,23 @@ export function ProfileDetailPage() {
               <div className="border p-2 rounded">
                 <div className="text-gray-500">Avg Likes</div>
                 <div className="font-semibold">
-                  {formatFollowersDetail(user.avg_likes)}
+                  {formatFollowers(user.avg_likes)}
                 </div>
               </div>
             )}
             {user.avg_comments !== undefined && (
               <div className="border p-2 rounded">
                 <div className="text-gray-500">Avg Comments</div>
-                <div className="font-semibold">{user.avg_comments}</div>
+                <div className="font-semibold">
+                  {formatFollowers(user.avg_comments)}
+                </div>
               </div>
             )}
             {user.avg_views !== undefined && user.avg_views > 0 && (
               <div className="border p-2 rounded">
                 <div className="text-gray-500">Avg Views</div>
                 <div className="font-semibold">
-                  {formatFollowersDetail(user.avg_views)}
+                  {formatFollowers(user.avg_views)}
                 </div>
               </div>
             )}
@@ -132,7 +159,7 @@ export function ProfileDetailPage() {
               <div className="border p-2 rounded">
                 <div className="text-gray-500">Engagements</div>
                 <div className="font-semibold">
-                  {formatEngagementRate(user.engagement_rate)}
+                  {formatFollowers(user.engagements)}
                 </div>
               </div>
             )}
@@ -142,13 +169,13 @@ export function ProfileDetailPage() {
             <a
               href={user.url}
               target="_blank"
+              rel="noopener noreferrer"
               className="inline-block mt-4 text-blue-600 text-sm"
             >
               View on platform →
             </a>
           )}
 
-          {/* TODO: candidates must implement Add to List feature */}
           {/* TODO: candidates must implement Add to List feature */}
           <button
             disabled

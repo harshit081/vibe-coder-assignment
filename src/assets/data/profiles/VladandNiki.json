@@ -1,0 +1,35 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-vladandniki",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "youtube",
+            "user_id": "UCvlE5gTbOvjiolFlEm-c_Ow",
+            "username": "VladandNiki",
+            "url": "https://www.youtube.com/channel/UCvlE5gTbOvjiolFlEm-c_Ow",
+            "picture": "https://yt3.googleusercontent.com/RlnpUc0SBCmYvseTqUqAfYeyHw0nHcmqQIVS0vMcTKpk3gQAY0ZZY1JpUxxjLPAYROhDYKub=s480-c-k-c0x00ffffff-no-rj",
+            "fullname": "Vlad and Niki",
+            "description": "Family-friendly adventures and fun stories for kids.",
+            "is_verified": true,
+            "is_hidden": false,
+            "followers": 126000000,
+            "posts_count": 158,
+            "engagements": 34281,
+            "engagement_rate": 0.0002720714285714286,
+            "avg_likes": 31539,
+            "avg_comments": 1371,
+            "avg_views": 5241063,
+            "handle": "VladandNiki"
+        }
+    }
+}

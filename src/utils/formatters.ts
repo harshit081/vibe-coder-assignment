@@ -1,11 +1,15 @@
 export function formatFollowers(count: number): string {
-  if (count >= 1000000) {
-    return (count / 1000000).toFixed(1) + "M";
+  if (count >= 1_000_000) {
+    return (count / 1_000_000).toFixed(1) + "M";
   }
-  if (count >= 1000) {
-    return (count / 1000).toFixed(1) + "K";
+  if (count >= 1_000) {
+    return (count / 1_000).toFixed(1) + "K";
   }
-  return count.toString();
+  return count.toLocaleString();
+}
+
+export function formatFollowersLabel(count: number): string {
+  return `${formatFollowers(count)} followers`;
 }
 
 export function formatEngagementRate(rate: number | undefined): string {

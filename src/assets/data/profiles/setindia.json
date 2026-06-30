@@ -1,0 +1,35 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-setindia",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "youtube",
+            "user_id": "UCpEhnqL0y41EpW2TvWAHD7Q",
+            "username": "setindia",
+            "url": "https://www.youtube.com/channel/UCpEhnqL0y41EpW2TvWAHD7Q",
+            "picture": "https://yt3.googleusercontent.com/eu051krrRNQMMi5h6ynfnvhFJzxzSKulJQ42g5v72MQ9Bvv8KdpNIa6yM-0iGpnDgSF0itAD=s480-c-k-c0x00ffffff-no-rj",
+            "fullname": "SET India",
+            "description": "Official YouTube channel for Sony Entertainment Television India.",
+            "is_verified": true,
+            "is_hidden": false,
+            "followers": 178000000,
+            "posts_count": 223,
+            "engagements": 357,
+            "engagement_rate": 0.0000020056179775280897,
+            "avg_likes": 328,
+            "avg_comments": 14,
+            "avg_views": 15027,
+            "handle": "SETIndia"
+        }
+    }
+}

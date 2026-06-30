@@ -1,0 +1,37 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-therock",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "instagram",
+            "user_id": "232192182",
+            "username": "therock",
+            "url": "https://www.instagram.com/therock/",
+            "picture": "https://imgp.sptds.icu/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDbrEEwrWumIvR20xZeZXa0LDeIrcniqZeG9S%2F1a5s2Rx3FZdXrWpY%2BmSBJp1l%2FmBGon3rcHA4EfuatZqMhVBzAT",
+            "fullname": "Dwayne Johnson",
+            "description": "Actor, producer, and businessman.",
+            "is_verified": true,
+            "is_business": true,
+            "is_hidden": false,
+            "followers": 395083239,
+            "posts_count": 790,
+            "engagements": 570699,
+            "engagement_rate": 0.0014445031924019435,
+            "avg_likes": 525043,
+            "avg_comments": 22828,
+            "avg_views": 0,
+            "account_type": 3,
+            "avg_reels_plays": 7901665
+        }
+    }
+}

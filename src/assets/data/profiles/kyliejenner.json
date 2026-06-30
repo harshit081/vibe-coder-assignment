@@ -1,0 +1,37 @@
+{
+    "cached": true,
+    "contact": {
+        "showEmail": false,
+        "showPhone": false
+    },
+    "data": {
+        "success": true,
+        "version": "2",
+        "report_info": {
+            "report_id": "gen-kyliejenner",
+            "created": "2024-06-01T12:00:00.000+00:00",
+            "profile_updated": "2024-06-01T12:00:00.000+00:00"
+        },
+        "user_profile": {
+            "type": "instagram",
+            "user_id": "12281817",
+            "username": "kyliejenner",
+            "url": "https://www.instagram.com/kyliejenner/",
+            "picture": "https://imgp.sptds.icu/v2?mb0KwpL92uYofJiSjDn1%2F6peL1lBwv3s%2BUvShHERlDbi%2FzCyzJZ6fg43%2BYylAG3qU9IHUr9IjyPjlrZFWjLnxqoc%2FkAWmZPskfobrJMaRRydFJEk1zghbcXnXQJlx7gogNlJUwVYqIiahjW32e%2BqWA%3D%3D",
+            "fullname": "Kylie",
+            "description": "Founder of Kylie Cosmetics.",
+            "is_verified": true,
+            "is_business": true,
+            "is_hidden": false,
+            "followers": 396278529,
+            "posts_count": 793,
+            "engagements": 2288558,
+            "engagement_rate": 0.005775124899587986,
+            "avg_likes": 2105473,
+            "avg_comments": 91542,
+            "avg_views": 0,
+            "account_type": 3,
+            "avg_reels_plays": 7925571
+        }
+    }
+}
