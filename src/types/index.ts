@@ -45,3 +45,10 @@ export interface ProfileDetailResponse {
     user_profile: FullUserProfile;
   };
 }
+
+export interface SelectedProfile {
+  id: string;
+  platform: Platform;
+  profile: UserProfileSummary;
+  addedAt: number;
+}

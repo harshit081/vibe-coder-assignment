@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { AddToListButton } from "@/components/AddToListButton";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import type { FullUserProfile, Platform, ProfileDetailResponse } from "@/types";
 import {
@@ -11,9 +12,20 @@ import { isDetailedProfile, loadProfileByUsername } from "@/utils/profileLoader"
 
 const PLATFORMS: Platform[] = ["instagram", "youtube", "tiktok"];
 
-function parsePlatform(value: string | null): Platform | null {
+function parsePlatformParam(value: string | null): Platform | null {
   if (value && PLATFORMS.includes(value as Platform)) {
     return value as Platform;
+  }
+  return null;
+}
+
+function resolvePlatform(
+  queryPlatform: Platform | null,
+  profileType?: string
+): Platform | null {
+  if (queryPlatform) return queryPlatform;
+  if (profileType && PLATFORMS.includes(profileType as Platform)) {
+    return profileType as Platform;
   }
   return null;
 }
@@ -21,7 +33,7 @@ function parsePlatform(value: string | null): Platform | null {
 export function ProfileDetailPage() {
   const { username } = useParams<{ username: string }>();
   const [searchParams] = useSearchParams();
-  const platform = parsePlatform(searchParams.get("platform"));
+  const queryPlatform = parsePlatformParam(searchParams.get("platform"));
   const [profileData, setProfileData] = useState<ProfileDetailResponse | null>(
     null
   );
@@ -33,7 +45,7 @@ export function ProfileDetailPage() {
 
     let cancelled = false;
 
-    loadProfileByUsername(username, platform).then((data) => {
+    loadProfileByUsername(username, queryPlatform).then((data) => {
       if (cancelled) return;
       setProfileData(data);
       setLoadedUsername(username);
@@ -43,7 +55,7 @@ export function ProfileDetailPage() {
     return () => {
       cancelled = true;
     };
-  }, [username, platform]);
+  }, [username, queryPlatform]);
 
   const isLoading = loadedUsername !== username;
 
@@ -78,6 +90,7 @@ export function ProfileDetailPage() {
   }
 
   const user: FullUserProfile = profileData.data.user_profile;
+  const platform = resolvePlatform(queryPlatform, user.type);
 
   return (
     <Layout title={user.fullname}>
@@ -176,13 +189,19 @@ export function ProfileDetailPage() {
             </a>
           )}
 
-          {/* TODO: candidates must implement Add to List feature */}
-          <button
-            disabled
-            className="block mt-4 px-4 py-2 bg-gray-300 text-gray-500 rounded cursor-not-allowed"
-          >
-            Add to List
-          </button>
+          {platform ? (
+            <AddToListButton
+              profile={user}
+              platform={platform}
+              size="md"
+              className="block mt-4"
+            />
+          ) : (
+            <p className="mt-4 text-sm text-gray-500">
+              Platform unknown — open this profile from search to add to your
+              list.
+            </p>
+          )}
         </div>
       </div>
     </Layout>

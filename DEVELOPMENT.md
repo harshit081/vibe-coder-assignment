@@ -23,8 +23,8 @@
 |---|------|--------|-------|
 | 1 | Find and fix bugs / quality issues | Done | B1–B10 resolved (see changelog) |
 | 2 | Redesign UI/UX | Not started | Current UI is minimal starter layout |
-| 3 | Zustand state management | Not started | Starter has no React Context; Zustand will be added fresh |
-| 4 | Select profile & Add to List | Not started | Stub buttons in `ProfileCard` and `ProfileDetailPage` |
+| 3 | Zustand state management | Done | `selectedListStore` with localStorage persist |
+| 4 | Select profile & Add to List | Done | Add, dedupe, view, remove, reorder, persist |
 | 5 | Improve code quality & structure | Not started | |
 | 6 | Optimize performance | Not started | |
 | 7 | Libraries as needed | In progress | `@hello-pangea/dnd` added (see changelog) |
@@ -44,8 +44,8 @@
 | Build | Vite 8 |
 | Styling | Tailwind CSS 4 |
 | Routing | React Router 7 |
-| State (planned) | Zustand |
-| Drag & drop (planned) | `@hello-pangea/dnd` |
+| State (current) | Zustand + persist |
+| Drag & drop | `@hello-pangea/dnd` (selected list reorder) |
 
 ### Project structure (baseline)
 
@@ -57,7 +57,11 @@ src/
 ├── pages/
 │   ├── SearchPage.tsx      # Platform filter, search, profile list
 │   └── ProfileDetailPage.tsx
+├── store/
+│   └── selectedListStore.ts  # Zustand + localStorage persist
 ├── components/
+│   ├── AddToListButton.tsx
+│   ├── SelectedListPanel.tsx
 │   ├── Layout.tsx
 │   ├── PlatformFilter.tsx
 │   ├── ProfileList.tsx
@@ -99,7 +103,7 @@ Issues identified during initial analysis (intentional bugs / quality gaps in th
 | B8 | Security | External link missing `rel="noopener noreferrer"` | `ProfileDetailPage.tsx` | Yes |
 | B9 | Layout | Fixed `w-[700px]` on cards — not responsive | `ProfileCard.tsx` | Yes |
 | B10 | Debug | `console.log` left in click handler | `SearchPage.tsx` | Yes |
-| B11 | Feature | "Add to List" disabled stub | `ProfileCard`, `ProfileDetailPage` | No |
+| B11 | Feature | "Add to List" disabled stub | `ProfileCard`, `ProfileDetailPage` | Yes |
 
 ---
 
@@ -117,11 +121,7 @@ Issues identified during initial analysis (intentional bugs / quality gaps in th
 |---------|-------------|--------|------|
 | `react-beautiful-dnd` | `@hello-pangea/dnd` | Peer dependency conflict with React 19; package is deprecated | 30 Jun 2026 |
 
-### Planned (not yet installed)
-
-| Package | Purpose |
-|---------|---------|
-| `zustand` | Selected profiles list + persistence |
+| `zustand` | ^5.x | Selected profiles list with `persist` middleware (localStorage) | 30 Jun 2026 |
 
 ---
 
@@ -133,7 +133,8 @@ _Document decisions here as they are made._
 |------|------------|
 | 30 Jun 2026 | Generated profile JSON uses search data plus estimated extended stats where the search JSON did not include them. |
 | 30 Jun 2026 | All 30 search profiles now have detail JSON; summary fallback in `profileLoader` remains as a safety net. |
-| 30 Jun 2026 | Platform query param is validated against known platforms; invalid values trigger a cross-platform username lookup. |
+| 30 Jun 2026 | Duplicate detection uses `platform + username` (case-insensitive username in ID). Same creator on different platforms can appear twice. |
+| 30 Jun 2026 | List order is user-controlled via drag-and-drop and persisted to localStorage. |
 
 ---
 
@@ -144,13 +145,37 @@ _Document deliberate compromises here._
 | Date | Decision | Trade-off |
 |------|----------|-----------|
 | 30 Jun 2026 | Removed unused click-tracking state from `SearchPage` instead of fixing the stale closure | Cleaner code; no analytics hook remains for profile clicks |
-| 30 Jun 2026 | Summary fallback for missing detail JSON | Users see limited stats (no posts/avg likes) but avoid dead-end error pages |
+| 30 Jun 2026 | Zustand over React Context | Lighter API, built-in persist middleware, no provider wrapper needed |
 
 ---
 
 ## Changelog
 
 Newest entries first.
+
+### 2026-06-30 — Zustand store & Add to List feature
+
+**Dependencies**
+- Added `zustand` with `persist` middleware.
+
+**Store** (`src/store/selectedListStore.ts`)
+- `addProfile(profile, platform)` — returns `false` if duplicate
+- `removeProfile(id)`, `clearList()`, `reorderProfiles(start, end)`
+- `isSelected(platform, username)` for button state
+- Persisted to `localStorage` key `wobb-selected-profiles`
+
+**Components**
+- `AddToListButton` — wired in `ProfileCard` and `ProfileDetailPage`; shows "Added" when duplicate
+- `SelectedListPanel` — sidebar list with remove, clear all, drag-to-reorder (`@hello-pangea/dnd`)
+- `Layout` — two-column layout with sticky list panel + selected count in header
+
+**Types**
+- `SelectedProfile` interface in `types/index.ts`
+- `getSelectedProfileId()` helper for stable dedupe keys
+
+**Verification:** `npm run build` and `npm run lint` pass.
+
+---
 
 ### 2026-06-30 — Profile JSON data for all search cards
 
@@ -223,8 +248,8 @@ Newest entries first.
 ## Remaining work (high level)
 
 1. ~~Fix starter bugs (B1–B10).~~
-2. Implement Zustand store with localStorage persistence for selected profiles.
-3. Build Add to List UI: add, dedupe, view, remove, optional drag reorder.
+2. ~~Implement Zustand store with localStorage persistence for selected profiles.~~
+3. ~~Build Add to List UI: add, dedupe, view, remove, optional drag reorder.~~
 4. Full UI/UX redesign (responsive, accessible, polished).
 5. Refactor structure, consolidate formatters, add memoization where useful.
 6. Update submission `README.md` from this file.
