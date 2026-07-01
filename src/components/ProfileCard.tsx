@@ -4,7 +4,7 @@ import { AddToListButton } from "@/components/AddToListButton";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { getPlatformTheme } from "@/theme/platformThemes";
-import { formatFollowers, formatEngagementRate } from "@/utils/formatters";
+import { formatFollowers, formatEngagementRate, getAudienceCountLabel } from "@/utils/formatters";
 
 interface ProfileCardProps {
   profile: UserProfileSummary;
@@ -77,7 +77,7 @@ export function ProfileCard({ profile, platform }: ProfileCardProps) {
             {formatFollowers(profile.followers)}
           </p>
           <p className="text-[10px] uppercase tracking-wider text-zinc-600">
-            followers
+            {getAudienceCountLabel(platform)}
           </p>
         </div>
         {profile.engagement_rate !== undefined && (

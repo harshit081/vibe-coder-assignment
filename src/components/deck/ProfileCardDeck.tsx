@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Platform, UserProfileSummary } from "@/types";
 import { CylinderProfileCard } from "./CylinderProfileCard";
+import { ExpandedProfileShowcase } from "./ExpandedProfileShowcase";
 import {
   computeOrbitalTransform,
   computeOrbitRadius,
+  computeOrbitStageSize,
   type CylinderMetrics,
+  type CylinderTransform,
   wrapOffset,
 } from "./cylinderMath";
 
@@ -15,6 +18,19 @@ const PROGRESS_LERP = 0.12;
 const COAST_FRICTION = 0.94;
 const COAST_MIN = 0.0008;
 const MAX_WHEEL_DELTA = 64;
+const DRAG_THRESHOLD = 10;
+const EXPAND_LERP = 0.11;
+const EXPANDED_Z = 520;
+const EXPANDED_SCALE_X = 1;
+const EXPANDED_SCALE_Y = 1;
+
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
+function easeOutCubic(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
+}
 
 interface ProfileCardDeckProps {
   profiles: UserProfileSummary[];
@@ -34,13 +50,20 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
     startX: 0,
     startProgress: 0,
     moved: false,
+    capturing: false,
+    cardUserId: null as string | null,
   });
   const pointerVelocity = useRef(0);
   const lastPointer = useRef({ x: 0, t: 0 });
   const sceneRef = useRef<HTMLDivElement>(null);
   const expandedKeyRef = useRef<string | null>(null);
+  const expandProgress = useRef(0);
+  const expandTarget = useRef(0);
+  const expandFrom = useRef<CylinderTransform | null>(null);
+  const clearExpandedWhenClosed = useRef(false);
 
   const [expandedKey, setExpandedKey] = useState<string | null>(null);
+  const [viewportW, setViewportW] = useState(() => window.innerWidth);
   const [metrics, setMetrics] = useState<CylinderMetrics>(() => {
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -51,13 +74,28 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
     return { cardW, cardH: Math.round(cardW * 1.72) };
   });
 
+  const setExpanded = useCallback((userId: string | null) => {
+    expandedKeyRef.current = userId;
+    setExpandedKey(userId);
+  }, []);
+
   useEffect(() => {
     expandedKeyRef.current = expandedKey;
+  }, [expandedKey]);
+
+  useEffect(() => {
+    if (!expandedKey) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [expandedKey]);
 
   const updateMetrics = useCallback(() => {
     const w = window.innerWidth;
     const h = window.innerHeight;
+    setViewportW(w);
     const heightFactor = Math.min(1, Math.max(0.62, h / 820));
 
     let cardW = Math.round(w * 0.14 + 118);
@@ -104,7 +142,6 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
 
     const onWheel = (e: WheelEvent) => {
       if (expandedKeyRef.current) return;
-
       e.preventDefault();
       const raw =
         Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
@@ -117,8 +154,27 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
     return () => el.removeEventListener("wheel", onWheel);
   }, [count]);
 
+  const closeExpanded = useCallback(() => {
+    expandTarget.current = 0;
+    clearExpandedWhenClosed.current = true;
+  }, []);
+
   const renderLoop = useCallback(() => {
     if (count === 0) return;
+
+    expandProgress.current +=
+      (expandTarget.current - expandProgress.current) * EXPAND_LERP;
+
+    if (
+      clearExpandedWhenClosed.current &&
+      expandProgress.current < 0.02
+    ) {
+      clearExpandedWhenClosed.current = false;
+      expandProgress.current = 0;
+      expandFrom.current = null;
+      expandedKeyRef.current = null;
+      queueMicrotask(() => setExpanded(null));
+    }
 
     if (!dragRef.current.active && !expandedKeyRef.current) {
       if (Math.abs(coastVelocity.current) > COAST_MIN) {
@@ -139,6 +195,8 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
     const orbitRadius = computeOrbitRadius(metrics, viewportW);
     const virtualActive = progress.current;
     const expanded = expandedKeyRef.current;
+    const expandT = easeOutCubic(expandProgress.current);
+    const from = expandFrom.current;
 
     for (let i = 0; i < count; i++) {
       const card = cardsRefs.current[i];
@@ -147,18 +205,24 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
       const profile = profiles[i];
       const isExpanded = expanded === profile.user_id;
 
-      if (isExpanded) {
+      if (isExpanded && from) {
+        const x = lerp(from.x, 0, expandT);
+        const z = lerp(from.z, EXPANDED_Z, expandT);
+        const rotX = lerp(from.rotateX, 0, expandT);
+        const rotY = lerp(from.rotateY, 0, expandT);
+        const rotZ = lerp(from.rotateZ, 0, expandT);
+        const scaleX = lerp(1, EXPANDED_SCALE_X, expandT);
+        const scaleY = lerp(1, EXPANDED_SCALE_Y, expandT);
+
         card.style.visibility = "visible";
         card.style.zIndex = "500";
         card.style.opacity = "1";
-        card.style.pointerEvents = "auto";
-        card.style.transform =
-          "translateX(0px) translateZ(460px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.08)";
+        card.style.pointerEvents = expandT > 0.5 ? "auto" : "none";
+        card.style.transform = `translateX(${x.toFixed(2)}px) translateZ(${z.toFixed(2)}px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) rotateZ(${rotZ.toFixed(2)}deg) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
         continue;
       }
 
       const offset = wrapOffset(i - virtualActive, count);
-
       const transform = computeOrbitalTransform(
         offset,
         count,
@@ -167,14 +231,17 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
       );
 
       const dimmed = Boolean(expanded);
+      const fade = dimmed ? 1 - expandT * 0.9 : 1;
       card.style.visibility = "visible";
       card.style.zIndex = String(transform.zIndex);
-      card.style.opacity = dimmed ? "0.2" : String(transform.opacity);
+      card.style.opacity = dimmed
+        ? String(Math.max(0.05, transform.opacity * fade))
+        : String(transform.opacity);
       card.style.pointerEvents =
-        !dimmed && transform.centerFactor > 0.35 ? "auto" : "none";
+        !dimmed && Math.abs(offset) < 0.65 ? "auto" : "none";
       card.style.transform = `translateX(${transform.x.toFixed(2)}px) translateZ(${transform.z.toFixed(2)}px) rotateX(${transform.rotateX.toFixed(2)}deg) rotateY(${transform.rotateY.toFixed(2)}deg) rotateZ(${transform.rotateZ}deg)`;
     }
-  }, [count, metrics, profiles]);
+  }, [count, metrics, profiles, setExpanded]);
 
   useEffect(() => {
     const tick = () => {
@@ -187,21 +254,33 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (expandedKey) return;
+
+    const card = (e.target as HTMLElement).closest("[data-deck-card]");
+
     dragRef.current = {
       active: true,
       startX: e.clientX,
       startProgress: progress.current,
       moved: false,
+      capturing: false,
+      cardUserId: card?.getAttribute("data-user-id") ?? null,
     };
     coastVelocity.current = 0;
     lastPointer.current = { x: e.clientX, t: performance.now() };
-    e.currentTarget.setPointerCapture(e.pointerId);
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current.active) return;
+
     const dx = e.clientX - dragRef.current.startX;
-    if (Math.abs(dx) > 6) dragRef.current.moved = true;
+    if (!dragRef.current.moved && Math.abs(dx) > DRAG_THRESHOLD) {
+      dragRef.current.moved = true;
+      dragRef.current.capturing = true;
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
+
+    if (!dragRef.current.moved) return;
+
     progress.current = dragRef.current.startProgress - dx * DRAG_TO_PROGRESS;
     targetProgress.current = progress.current;
 
@@ -215,15 +294,52 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current.active) return;
-    coastVelocity.current = -pointerVelocity.current * DRAG_TO_PROGRESS * 0.85;
+
+    if (dragRef.current.moved) {
+      coastVelocity.current = -pointerVelocity.current * DRAG_TO_PROGRESS * 0.85;
+    } else if (dragRef.current.cardUserId) {
+      handleCardSelect(dragRef.current.cardUserId);
+    } else {
+      const hit = document.elementFromPoint(e.clientX, e.clientY);
+      const card = hit?.closest("[data-deck-card]");
+      const userId = card?.getAttribute("data-user-id");
+      if (userId) {
+        handleCardSelect(userId);
+      }
+    }
+
+    if (dragRef.current.capturing) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+
     dragRef.current.active = false;
+    dragRef.current.capturing = false;
     pointerVelocity.current = 0;
-    e.currentTarget.releasePointerCapture(e.pointerId);
   };
 
   const handleCardSelect = (userId: string) => {
-    if (dragRef.current.moved) return;
-    setExpandedKey((current) => (current === userId ? null : userId));
+    if (expandedKey === userId) {
+      closeExpanded();
+      return;
+    }
+
+    const idx = profiles.findIndex((p) => p.user_id === userId);
+    if (idx < 0) return;
+
+    const orbitRadius = computeOrbitRadius(metrics, window.innerWidth);
+    const offset = wrapOffset(idx - progress.current, count);
+    expandFrom.current = computeOrbitalTransform(
+      offset,
+      count,
+      orbitRadius,
+      mouse.current
+    );
+
+    coastVelocity.current = 0;
+    expandProgress.current = 0;
+    expandTarget.current = 1;
+    clearExpandedWhenClosed.current = false;
+    setExpanded(userId);
   };
 
   if (count === 0) {
@@ -239,65 +355,89 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
     );
   }
 
+  const orbitRadius = computeOrbitRadius(metrics, viewportW);
+  const stageSize = computeOrbitStageSize(metrics, orbitRadius);
+  const expandedProfile = expandedKey
+    ? profiles.find((p) => p.user_id === expandedKey)
+    : undefined;
+
   return (
-    <div className="relative flex h-full min-h-[68vh] flex-col lg:min-h-screen">
+    <div className="relative h-full min-h-0 overflow-hidden">
       {expandedKey && (
         <button
           type="button"
           aria-label="Close expanded card"
-          className="absolute inset-0 z-40 bg-black/55 animate-fade-in"
-          onClick={() => setExpandedKey(null)}
+          className="fixed inset-0 z-40 bg-black/65 animate-fade-in"
+          onClick={closeExpanded}
         />
+      )}
+
+      {expandedProfile && (
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="pointer-events-auto">
+            <ExpandedProfileShowcase
+              summary={expandedProfile}
+              platform={platform}
+              onClose={closeExpanded}
+            />
+          </div>
+        </div>
       )}
 
       <div
         ref={sceneRef}
-        className="cylinder-scene relative flex flex-1 items-center justify-center overflow-hidden select-none touch-pan-y"
+        className="cylinder-scene relative z-10 flex h-full min-h-0 flex-1 items-center justify-center overflow-hidden select-none touch-pan-y"
         style={{ perspective: "1350px" }}
-        onPointerDown={handlePointerDown}
+        onPointerDownCapture={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
       >
         <div
-          className="absolute pointer-events-none"
+          className="absolute left-1/2 top-1/2 pointer-events-none"
           style={{
-            width: metrics.cardW,
-            height: metrics.cardH,
+            width: stageSize.width,
+            height: stageSize.height,
+            marginLeft: -stageSize.width / 2,
+            marginTop: -stageSize.height / 2,
             transformStyle: "preserve-3d",
           }}
         >
-          {profiles.map((profile, i) => (
-            <div
-              key={profile.user_id}
-              ref={(el) => {
-                cardsRefs.current[i] = el;
-              }}
-              className="cylinder-card-slot absolute inset-0 cursor-grab active:cursor-grabbing"
-              style={{
-                width: metrics.cardW,
-                height: metrics.cardH,
-                transformStyle: "preserve-3d",
-                backfaceVisibility: "visible",
-                willChange: "transform, opacity",
-              }}
-            >
-              <CylinderProfileCard
-                profile={profile}
-                platform={platform}
-                cardW={metrics.cardW}
-                cardH={metrics.cardH}
-                expanded={expandedKey === profile.user_id}
-                onSelect={() => handleCardSelect(profile.user_id)}
-                onClose={() => setExpandedKey(null)}
-              />
-            </div>
-          ))}
+          {profiles.map((profile, i) => {
+            const isExpanded = expandedKey === profile.user_id;
+            return (
+              <div
+                key={profile.user_id}
+                ref={(el) => {
+                  cardsRefs.current[i] = el;
+                }}
+                className={`cylinder-card-slot absolute left-1/2 top-1/2 ${
+                  isExpanded ? "" : "cursor-grab active:cursor-grabbing"
+                }`}
+                style={{
+                  width: metrics.cardW,
+                  height: metrics.cardH,
+                  marginLeft: -metrics.cardW / 2,
+                  marginTop: -metrics.cardH / 2,
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "visible",
+                  willChange: "transform, opacity",
+                }}
+              >
+                {isExpanded ? null : (
+                  <CylinderProfileCard
+                    profile={profile}
+                    platform={platform}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <p className="pointer-events-none pb-4 text-center text-[11px] uppercase tracking-[0.2em] text-white/30">
-        Drag or scroll to orbit · tap front card to expand
+      <p className="pointer-events-none absolute inset-x-0 bottom-2 z-20 text-center text-[11px] uppercase tracking-[0.2em] text-white/30">
+        Drag or scroll to orbit · hover for stats · click card to open
       </p>
     </div>
   );

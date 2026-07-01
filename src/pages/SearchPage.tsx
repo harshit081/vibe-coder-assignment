@@ -45,7 +45,7 @@ export function SearchPage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden">
+    <div className="relative h-svh overflow-hidden">
       <VideoBackground />
 
       <div className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-5 sm:px-4">
@@ -70,7 +70,7 @@ export function SearchPage() {
         </div>
       </div>
 
-      <section className="relative z-10 min-h-screen pt-16 sm:pt-[4.5rem]">
+      <section className="relative z-10 box-border h-full overflow-hidden pt-16 sm:pt-[4.5rem]">
         <ProfileCardDeck
           key={platform}
           profiles={filtered}

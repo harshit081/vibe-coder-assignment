@@ -14,6 +14,7 @@ import { getPlatformTheme } from "@/theme/platformThemes";
 import {
   formatEngagementRate,
   formatFollowers,
+  getAudienceCountLabel,
 } from "@/utils/formatters";
 import { isDetailedProfile, loadProfileByUsername } from "@/utils/profileLoader";
 import { buildSearchUrl, parsePlatformParamNullable } from "@/utils/platformParams";
@@ -103,7 +104,11 @@ export function ProfileDetailPage() {
   const hasDetailedData = isDetailedProfile(username);
 
   const stats: { label: string; value: string; large?: boolean }[] = [
-    { label: "Followers", value: formatFollowers(user.followers), large: true },
+    {
+      label: platform ? getAudienceCountLabel(platform, true) : "Followers",
+      value: formatFollowers(user.followers),
+      large: true,
+    },
     {
       label: "Engagement",
       value: formatEngagementRate(user.engagement_rate),

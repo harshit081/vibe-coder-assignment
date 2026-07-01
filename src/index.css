@@ -191,6 +191,66 @@ h3 {
   will-change: transform, opacity;
 }
 
+.deck-card-root {
+  transform-style: preserve-3d;
+}
+
+.deck-card-flip-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.deck-card-flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.deck-card-face {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.deck-card-face-front {
+  transform: rotateY(0deg) translateZ(2px);
+}
+
+.deck-card-face-back {
+  transform: rotateY(180deg) translateZ(2px);
+}
+
+.deck-card-surface {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: #0f0f0f;
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.showcase-panel .showcase-body {
+  animation: expand-details-in 0.45s ease-out both;
+}
+
+@keyframes expand-details-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .carousel-viewport {
   mask-image: linear-gradient(
     to right,

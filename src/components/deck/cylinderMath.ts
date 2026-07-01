@@ -33,6 +33,16 @@ export function computeOrbitRadius(
   return Math.min(Math.max(base, 220), viewportW * 0.34);
 }
 
+export function computeOrbitStageSize(
+  metrics: CylinderMetrics,
+  orbitRadius: number
+): { width: number; height: number } {
+  return {
+    width: Math.ceil(orbitRadius * 2 + metrics.cardW + 48),
+    height: Math.ceil(metrics.cardH + 64),
+  };
+}
+
 /** Planet-style ring orbit: cards revolve around a fixed centre on the X/Z plane. */
 export function computeOrbitalTransform(
   offset: number,
@@ -45,8 +55,6 @@ export function computeOrbitalTransform(
 
   const x = Math.sin(rad) * orbitRadius;
   const z = Math.cos(rad) * orbitRadius - orbitRadius;
-  // z: 0 at front, -2*radius at back — normalize to [0, 1]
-  const depth = Math.max(0, Math.min(1, (z + 2 * orbitRadius) / (2 * orbitRadius)));
 
   const absOffset = Math.abs(offset);
   const centerFactor = Math.max(0, 1 - absOffset);
@@ -56,6 +64,13 @@ export function computeOrbitalTransform(
   const tiltX = -mouse.y * maxTiltX * centerFactor;
   const tiltY = mouse.x * maxTiltY * centerFactor;
 
+  // Facing: 1 at front, -1 at back — drives orbit fade
+  const facing = Math.cos((offset / count) * Math.PI * 2);
+  const backOpacity = 0.14;
+  const frontOpacity = 1;
+  const opacity =
+    backOpacity + ((facing + 1) / 2) * (frontOpacity - backOpacity);
+
   return {
     hidden: false,
     x,
@@ -64,7 +79,7 @@ export function computeOrbitalTransform(
     rotateY: -angleDeg + tiltY,
     rotateZ: -3,
     zIndex: Math.round(z + orbitRadius),
-    opacity: 0.72 + depth * 0.28,
+    opacity: Math.max(backOpacity, Math.min(frontOpacity, opacity)),
     centerFactor,
   };
 }

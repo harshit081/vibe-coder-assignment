@@ -144,7 +144,7 @@ export function SelectedListPanel({ embedded = false }: SelectedListPanelProps) 
                               />
                             </Link>
                             <p className="text-[11px] text-zinc-500 truncate pointer-events-none">
-                              {formatFollowersLabel(item.profile.followers)}
+                              {formatFollowersLabel(item.profile.followers, item.platform)}
                             </p>
                           </div>
                           <button

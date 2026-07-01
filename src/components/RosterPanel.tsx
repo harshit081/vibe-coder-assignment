@@ -11,7 +11,7 @@ import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useSelectedListStore } from "@/store/selectedListStore";
 import { getPlatformTheme } from "@/theme/platformThemes";
 import { getDraggableId } from "@/utils/selectedProfileId";
-import { formatFollowers } from "@/utils/formatters";
+import { formatFollowers, getAudienceCountLabel } from "@/utils/formatters";
 
 interface RosterPanelProps {
   className?: string;
@@ -125,7 +125,8 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
                           <VerifiedBadge verified={item.profile.is_verified} />
                         </p>
                         <p className="text-[11px] text-zinc-600 mt-1 tabular-nums">
-                          {formatFollowers(item.profile.followers)} ·{" "}
+                          {formatFollowers(item.profile.followers)}{" "}
+                          {getAudienceCountLabel(item.platform)} ·{" "}
                           <span className="capitalize">{item.platform}</span>
                         </p>
                       </div>

@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import { AddToListButton } from "@/components/AddToListButton";
+import { useState } from "react";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { getPlatformTheme } from "@/theme/platformThemes";
@@ -7,248 +6,209 @@ import type { Platform, UserProfileSummary } from "@/types";
 import {
   formatEngagementRate,
   formatFollowers,
+  getAudienceCountLabel,
 } from "@/utils/formatters";
-
-const THICKNESS_LAYERS = [-1.47, -0.73, 0, 0.73, 1.47];
 
 interface CylinderProfileCardProps {
   profile: UserProfileSummary;
   platform: Platform;
-  cardW: number;
-  cardH: number;
-  expanded: boolean;
-  onSelect: () => void;
-  onClose: () => void;
+}
+
+function BackStat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-black/35 px-2.5 py-2 text-center backdrop-blur-sm">
+      <p className="text-[9px] uppercase tracking-wider text-zinc-400">{label}</p>
+      <p className="mt-0.5 text-sm font-semibold tabular-nums text-white">{value}</p>
+    </div>
+  );
 }
 
 export function CylinderProfileCard({
   profile,
   platform,
-  cardW,
-  cardH,
-  expanded,
-  onSelect,
-  onClose,
 }: CylinderProfileCardProps) {
   const theme = getPlatformTheme(platform);
+  const [flipped, setFlipped] = useState(false);
+
+  const backStats: { label: string; value: string }[] = [
+    {
+      label: "Engagement",
+      value: formatEngagementRate(profile.engagement_rate),
+    },
+  ];
+
+  if (profile.engagements !== undefined) {
+    backStats.push({
+      label: "Engagements",
+      value: formatFollowers(profile.engagements),
+    });
+  }
+  if (profile.avg_views !== undefined && profile.avg_views > 0) {
+    backStats.push({
+      label: "Avg views",
+      value: formatFollowers(profile.avg_views),
+    });
+  }
+
+  backStats.push({
+    label: getAudienceCountLabel(platform, true),
+    value: formatFollowers(profile.followers),
+  });
 
   return (
     <div
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        width: cardW,
-        height: cardH,
-        transformStyle: "preserve-3d",
-      }}
+      className="deck-card-root absolute inset-0"
+      data-deck-card
+      data-user-id={profile.user_id}
+      onPointerEnter={() => setFlipped(true)}
+      onPointerLeave={() => setFlipped(false)}
     >
-      {THICKNESS_LAYERS.map((zOffset, layerIdx) => {
-        const isFront = layerIdx === THICKNESS_LAYERS.length - 1;
-        const isBack = layerIdx === 0;
-
-        if (!isFront && !isBack) {
-          return (
+      <div
+        className={`deck-card-flip-inner ${flipped ? "is-flipped" : ""}`}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <div className="deck-card-face deck-card-face-front">
+          <div className="deck-card-surface">
             <div
-              key={layerIdx}
-              className="absolute inset-0 rounded-2xl border border-white/10"
-              style={{
-                backgroundColor: "#606060",
-                transform: `translateZ(${zOffset}px)`,
-              }}
-            />
-          );
-        }
-
-        if (isFront) {
-          return (
-            <div
-              key={layerIdx}
-              className="absolute inset-0 rounded-2xl border border-white/15 overflow-hidden"
-              style={{
-                backgroundColor: "#0f0f0f",
-                transform: `translateZ(${zOffset}px)`,
-                backfaceVisibility: "hidden",
-                boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15)",
-              }}
+              role="button"
+              tabIndex={0}
+              data-deck-card
+              data-user-id={profile.user_id}
+              className="relative h-full w-full cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
             >
+              <div
+                className="absolute inset-x-0 top-0 z-10 h-1.5"
+                style={{ background: theme.gradient }}
+                aria-hidden="true"
+              />
+
+              <div className="relative h-[62%] overflow-hidden">
+                <ProfilePicture
+                  username={profile.username}
+                  src={profile.picture}
+                  platform={platform}
+                  handle={profile.handle}
+                  alt={profile.fullname}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
+                {profile.is_verified && (
+                  <span className="absolute top-3 left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500/90 text-[10px] text-white">
+                    ✓
+                  </span>
+                )}
+              </div>
+
+              <div className="relative flex h-[38%] flex-col justify-between p-4 pt-3">
+                <div>
+                  <p className="font-display text-base font-bold leading-tight text-white sm:text-lg">
+                    {profile.fullname}
+                  </p>
+                  <p className="mt-1 text-xs text-zinc-300 sm:text-sm">
+                    @{profile.username}
+                    <VerifiedBadge verified={profile.is_verified} />
+                  </p>
+                </div>
+                <div>
+                  <p className="text-lg font-semibold tabular-nums text-white">
+                    {formatFollowers(profile.followers)}
+                  </p>
+                  <p className="mt-0.5 text-[10px] uppercase tracking-wider text-zinc-500">
+                    {getAudienceCountLabel(platform)}
+                  </p>
+                </div>
+              </div>
+
+
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (!expanded) onSelect();
-                }}
-                className={`relative h-full w-full text-left pointer-events-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${
-                  expanded ? "cursor-default" : "cursor-pointer"
-                }`}
+                data-deck-expand
+                aria-label="Expand profile"
+                title="Expand profile"
+                className="absolute bottom-3 right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full glass-bubble border border-white/20 text-white/90 transition-colors hover:bg-white/15 hover:text-white"
               >
-                <div
-                  className="absolute inset-x-0 top-0 z-10 h-1.5"
-                  style={{ background: theme.gradient }}
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   aria-hidden="true"
-                />
-
-                {expanded && (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onClose();
-                    }}
-                    aria-label="Close"
-                    className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-black/55 text-lg text-white hover:bg-black/75 transition-colors pointer-events-auto"
-                  >
-                    ×
-                  </button>
-                )}
-
-                <div
-                  className={`relative overflow-hidden ${
-                    expanded ? "h-[48%]" : "h-[62%]"
-                  }`}
                 >
-                  <ProfilePicture
-                    username={profile.username}
-                    src={profile.picture}
-                    platform={platform}
-                    handle={profile.handle}
-                    alt={profile.fullname}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
-
-                  {profile.is_verified && (
-                    <span className="absolute top-3 left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500/90 text-[10px] text-white">
-                      ✓
-                    </span>
-                  )}
-                </div>
-
-                <div
-                  className={`relative flex flex-col p-4 ${
-                    expanded ? "gap-3 pt-3" : "h-[38%] justify-between pt-3"
-                  }`}
-                >
-                  <div>
-                    <p className="font-display text-base font-bold leading-tight text-white sm:text-lg">
-                      {profile.fullname}
-                    </p>
-                    <p className="mt-1 text-xs text-zinc-300 sm:text-sm">
-                      @{profile.username}
-                      <VerifiedBadge verified={profile.is_verified} />
-                    </p>
-                  </div>
-
-                  {!expanded ? (
-                    <div>
-                      <p className="text-lg font-semibold tabular-nums text-white">
-                        {formatFollowers(profile.followers)}
-                      </p>
-                      <p className="mt-0.5 text-[10px] uppercase tracking-wider text-zinc-500">
-                        followers
-                      </p>
-                    </div>
-                  ) : (
-                    <div
-                      className="space-y-3 pointer-events-auto"
-                      onClick={(e) => e.stopPropagation()}
-                      onKeyDown={(e) => e.stopPropagation()}
-                    >
-                      <div className="grid grid-cols-2 gap-2">
-                        <Stat label="Followers" value={formatFollowers(profile.followers)} />
-                        {profile.engagement_rate !== undefined && (
-                          <Stat
-                            label="Engagement"
-                            value={formatEngagementRate(profile.engagement_rate)}
-                          />
-                        )}
-                        {profile.avg_views !== undefined && profile.avg_views > 0 && (
-                          <Stat
-                            label="Avg views"
-                            value={formatFollowers(profile.avg_views)}
-                          />
-                        )}
-                        {profile.engagements !== undefined && (
-                          <Stat
-                            label="Engagements"
-                            value={formatFollowers(profile.engagements)}
-                          />
-                        )}
-                      </div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <AddToListButton profile={profile} platform={platform} size="sm" />
-                        <Link
-                          to={`/profile/${profile.username}?platform=${platform}`}
-                          onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center rounded-full border border-white/20 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/10 transition-colors"
-                        >
-                          Full showcase →
-                        </Link>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  <path d="M7 17L17 7M17 7H9M17 7V15" />
+                </svg>
               </button>
             </div>
-          );
-        }
+          </div>
+        </div>
 
-        return (
+        <div className="deck-card-face deck-card-face-back">
           <div
-            key={layerIdx}
-            className="absolute inset-0 rounded-2xl border border-white/15 overflow-hidden"
-            style={{
-              backgroundColor: "#0f0f0f",
-              transform: `translateZ(${zOffset}px) rotateY(180deg)`,
-              backfaceVisibility: "hidden",
-              boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15)",
-            }}
+            className="deck-card-surface"
+            data-deck-card
+            data-user-id={profile.user_id}
           >
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{ filter: "blur(16px)", transform: "scale(1.15)" }}
-            >
+            <div className="absolute inset-0 overflow-hidden rounded-2xl">
               <ProfilePicture
                 username={profile.username}
                 src={profile.picture}
                 platform={platform}
                 handle={profile.handle}
                 alt=""
-                className="absolute inset-0 h-full w-full object-cover"
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full scale-110 object-cover opacity-50 blur-lg"
               />
+              <div className="absolute inset-0 bg-zinc-950/82" />
             </div>
 
             <div
-              className="absolute inset-x-0 top-4 h-8 sm:h-9 z-10"
-              style={{ background: "rgba(0,0,0,0.85)" }}
+              className="absolute inset-x-0 top-0 z-10 h-1.5"
+              style={{ background: theme.gradient }}
+              aria-hidden="true"
             />
 
-            <div
-              className="absolute left-4 bottom-4 z-20 flex flex-col gap-1 text-left font-mono"
-              style={{ fontFamily: '"JetBrains Mono", monospace' }}
-            >
-              <div className="text-[10px] font-medium tracking-[0.12em] text-white/90 uppercase">
-                @{profile.username}
-              </div>
-              <div className="text-[9px] font-medium tracking-wide text-white/60">
-                {formatFollowers(profile.followers)} · {platform}
-              </div>
-              {profile.engagement_rate !== undefined && (
-                <div className="text-[9px] text-white/45">
-                  ENG {formatEngagementRate(profile.engagement_rate)}
+            <div className="relative z-10 flex h-full flex-col p-4 pt-4">
+              <div className="mb-3 flex shrink-0 items-center gap-3">
+                <ProfilePicture
+                  username={profile.username}
+                  src={profile.picture}
+                  platform={platform}
+                  handle={profile.handle}
+                  alt={profile.fullname}
+                  className="h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-white/25"
+                />
+                <div className="min-w-0 text-left">
+                  <p className="truncate font-display text-sm font-bold text-white">
+                    {profile.fullname}
+                  </p>
+                  <p className="mt-0.5 truncate text-xs text-zinc-300">
+                    @{profile.username}
+                    <VerifiedBadge verified={profile.is_verified} />
+                  </p>
                 </div>
-              )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                {backStats.map((stat) => (
+                  <BackStat key={stat.label} label={stat.label} value={stat.value} />
+                ))}
+              </div>
+
+              <p className="mt-auto pt-3 text-center text-[9px] uppercase tracking-[0.14em] text-white/35">
+                {platform}
+              </p>
             </div>
           </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-2">
-      <p className="text-[9px] uppercase tracking-wider text-zinc-500">{label}</p>
-      <p className="mt-0.5 text-xs font-bold tabular-nums text-white">{value}</p>
+        </div>
+      </div>
     </div>
   );
 }
