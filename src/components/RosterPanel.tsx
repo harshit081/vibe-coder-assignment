@@ -35,16 +35,18 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
   if (profiles.length === 0) {
     return (
       <div
-        className={`flex flex-col items-center justify-center text-center py-14 px-6 rounded-2xl border border-dashed border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent ${className}`}
+        className={`flex flex-col items-center justify-center rounded-2xl px-5 py-10 text-center ${className}`}
       >
-        <div className="w-12 h-12 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-4">
-          <span className="text-pink-400/80 text-lg" aria-hidden="true">
+        <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full border border-white/15">
+          <span className="text-base text-pink-400/90" aria-hidden="true">
             ★
           </span>
         </div>
-        <p className="text-sm font-semibold text-zinc-300">No creators yet</p>
-        <p className="text-xs text-zinc-500 mt-1.5 max-w-[240px] leading-relaxed">
-          Use &quot;Add to roster&quot; on any profile to build your shortlist
+        <p className="font-display text-sm font-semibold text-white/80">
+          No creators yet
+        </p>
+        <p className="mt-1.5 max-w-[200px] text-xs leading-relaxed text-white/35">
+          Tap + Add on any profile to build your shortlist
         </p>
       </div>
     );
@@ -57,7 +59,7 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
           <ul
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`space-y-2.5 ${className}`}
+            className={`w-full min-w-0 space-y-2 overflow-x-hidden ${className}`}
           >
             {profiles.map((item, index) => {
               const theme = getPlatformTheme(item.platform);
@@ -79,26 +81,26 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
                           ? { zIndex: 9999, opacity: 1 }
                           : undefined),
                       }}
-                      className={`group relative flex items-stretch rounded-xl border select-none touch-none ${
+                      className={`group relative flex w-full min-w-0 items-stretch overflow-hidden rounded-2xl border select-none touch-none ${
                         snapshot.isDragging
-                          ? "border-pink-500/50 bg-zinc-900 shadow-xl shadow-pink-500/15 cursor-grabbing overflow-visible"
-                          : "border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/15 cursor-grab overflow-hidden transition-[background-color,border-color,box-shadow]"
+                          ? "cursor-grabbing border-pink-400/35 bg-white/10 shadow-lg shadow-pink-500/15"
+                          : "cursor-grab border-white/15 bg-transparent transition-[border-color,background-color] hover:border-white/25 hover:bg-white/5"
                       }`}
                     >
                       <div
-                        className="w-1 shrink-0"
+                        className="absolute inset-x-0 top-0 z-10 h-1"
                         style={{ background: theme.gradient }}
                         aria-hidden="true"
                       />
 
                       <div
-                        className="flex items-center px-2 text-zinc-600 group-hover:text-zinc-400 shrink-0 pointer-events-none"
+                        className="flex shrink-0 items-center px-2 pt-2 text-white/25 group-hover:text-white/45 pointer-events-none"
                         aria-hidden="true"
                       >
-                        <GripIcon className="w-3.5 h-3.5" />
+                        <GripIcon className="h-3.5 w-3.5" />
                       </div>
 
-                      <span className="flex items-center w-5 shrink-0 text-[11px] font-bold text-zinc-600 tabular-nums pointer-events-none">
+                      <span className="flex w-4 shrink-0 items-center pt-2 text-[10px] font-bold tabular-nums text-white/30 pointer-events-none">
                         {index + 1}
                       </span>
 
@@ -109,22 +111,22 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
                         platform={item.platform}
                         handle={item.profile.handle}
                         alt={item.profile.fullname}
-                        className="w-11 h-11 rounded-lg object-cover shrink-0 self-center ring-1 ring-white/10 pointer-events-none"
+                        className="my-2.5 h-10 w-10 shrink-0 self-center rounded-xl object-cover ring-1 ring-white/20 pointer-events-none"
                       />
 
-                      <div className="flex-1 min-w-0 py-3 pl-3 pr-2 text-left">
+                      <div className="min-w-0 flex-1 py-2.5 pl-2 pr-1 text-left">
                         <Link
                           to={`/profile/${item.profile.username}?platform=${item.platform}`}
                           onPointerDown={(e) => e.stopPropagation()}
-                          className="text-sm font-semibold text-white truncate block leading-tight hover:text-pink-300 transition-colors"
+                          className="block truncate text-sm font-semibold leading-tight text-white transition-colors hover:text-pink-300"
                         >
                           {item.profile.fullname}
                         </Link>
-                        <p className="text-xs text-zinc-500 truncate mt-0.5">
+                        <p className="mt-0.5 truncate text-xs text-white/45">
                           @{item.profile.username}
                           <VerifiedBadge verified={item.profile.is_verified} />
                         </p>
-                        <p className="text-[11px] text-zinc-600 mt-1 tabular-nums">
+                        <p className="mt-1 truncate text-[10px] tabular-nums text-white/30">
                           {formatFollowers(item.profile.followers)}{" "}
                           {getAudienceCountLabel(item.platform)} ·{" "}
                           <span className="capitalize">{item.platform}</span>
@@ -136,7 +138,7 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
                         onClick={() => removeProfile(item.id)}
                         onPointerDown={(e) => e.stopPropagation()}
                         aria-label={`Remove ${item.profile.username}`}
-                        className="shrink-0 self-center mr-2 w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-500/10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-lg leading-none"
+                        className="mr-2 my-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 text-sm text-white/45 transition-colors hover:border-white/20 hover:text-red-400 sm:opacity-0 sm:group-hover:opacity-100"
                       >
                         ×
                       </button>

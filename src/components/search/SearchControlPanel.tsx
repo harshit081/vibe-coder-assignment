@@ -25,7 +25,7 @@ export function SearchControlPanel({
   const selectedCount = useSelectedListCount();
 
   return (
-    <div className="flex w-[220px] flex-col items-stretch gap-2 sm:w-[240px]">
+    <div className="flex w-[220px] min-w-0 flex-col items-stretch gap-2 overflow-x-hidden sm:w-[240px]">
       <div className="glass-bubble flex items-center gap-2 rounded-full px-3.5 py-2">
         <span className="text-sm text-white/40" aria-hidden="true">
           ⌕
@@ -52,34 +52,32 @@ export function SearchControlPanel({
           aria-label={pinned ? "Unpin roster" : "Pin roster"}
           aria-pressed={pinned}
           className={`glass-bubble flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-            pinned ? "text-pink-300 ring-1 ring-pink-400/40" : "text-white/55 hover:text-white"
+            pinned ? "text-pink-300 ring-1 ring-pink-400/40" : "text-white/70 hover:text-white"
           }`}
         >
           <PinIcon className="h-3.5 w-3.5" />
         </button>
 
-        {!pinned && (
-          <button
-            type="button"
-            onClick={onOpenRoster}
-            title="Open roster"
-            aria-label="Open roster"
-            className="glass-bubble relative flex h-9 w-9 items-center justify-center rounded-full text-white/55 transition-colors hover:text-white"
-          >
-            <StarIcon className="h-3.5 w-3.5 text-pink-400/90" />
-            {selectedCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-pink-500 px-1 text-[9px] font-bold text-white">
-                {selectedCount}
-              </span>
-            )}
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={onOpenRoster}
+          title={pinned ? "Expand roster" : "Open roster"}
+          aria-label={pinned ? "Expand roster" : "Open roster"}
+          className="glass-bubble relative flex h-9 w-9 items-center justify-center rounded-full text-pink-400 transition-colors hover:text-pink-300"
+        >
+          <StarIcon className="h-3.5 w-3.5" />
+          {selectedCount > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-pink-500 px-1 text-[9px] font-bold text-white">
+              {selectedCount}
+            </span>
+          )}
+        </button>
 
       </div>
 
       {showPinnedRoster && (
-        <div className="glass-panel-muted max-h-[min(42vh,320px)] overflow-hidden rounded-2xl border border-white/10">
-          <RosterSidebar className="max-h-[min(42vh,320px)]" showPinToggle={false} />
+        <div className="glass-card flex h-[min(320px,calc(100svh-11rem))] min-h-[140px] min-w-0 flex-col overflow-hidden rounded-2xl">
+          <RosterSidebar className="min-h-0 flex-1" />
         </div>
       )}
     </div>

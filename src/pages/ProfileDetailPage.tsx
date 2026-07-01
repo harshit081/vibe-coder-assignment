@@ -4,9 +4,7 @@ import { AddToListButton } from "@/components/AddToListButton";
 import { HeroPortrait } from "@/components/HeroPortrait";
 import { PlatformBadge } from "@/components/PlatformBadge";
 import { RosterDrawer } from "@/components/RosterDrawer";
-import { RosterSidebar } from "@/components/RosterSidebar";
 import { RosterToolbar } from "@/components/RosterToolbar";
-import { useRosterUiStore } from "@/store/rosterUiStore";
 import { StatCard } from "@/components/StatCard";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import type { FullUserProfile, Platform, ProfileDetailResponse } from "@/types";
@@ -36,7 +34,6 @@ export function ProfileDetailPage() {
   const { username } = useParams<{ username: string }>();
   const [searchParams] = useSearchParams();
   const queryPlatform = parsePlatformParamNullable(searchParams.get("platform"));
-  const rosterPinned = useRosterUiStore((state) => state.pinned);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [profileData, setProfileData] = useState<ProfileDetailResponse | null>(
     null
@@ -215,9 +212,7 @@ export function ProfileDetailPage() {
 
       {/* Stats + roster */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-        <div
-          className={`flex flex-col gap-8 ${rosterPinned ? "xl:flex-row" : ""}`}
-        >
+        <div className="flex flex-col gap-8">
           <div className="flex-1 min-w-0">
             {!hasDetailedData && (
               <p className="text-amber-400/80 text-sm mb-6 px-4 py-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
@@ -240,15 +235,11 @@ export function ProfileDetailPage() {
               ))}
             </div>
           </div>
-
-          {rosterPinned && (
-            <RosterSidebar className="w-full xl:w-[380px] shrink-0 max-h-[600px] xl:max-h-[calc(100vh-8rem)] rounded-2xl border border-white/10 bg-[#0c0c13]/80 overflow-hidden xl:sticky xl:top-6" />
-          )}
         </div>
       </section>
 
       <RosterDrawer
-        open={drawerOpen && !rosterPinned}
+        open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
     </div>

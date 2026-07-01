@@ -57,18 +57,20 @@ export function SearchPage() {
         </div>
       </div>
 
-      <div className="pointer-events-none fixed right-3 top-[4.75rem] z-40 sm:right-5 lg:right-8 lg:top-1/2 lg:-translate-y-1/2">
-        <div className="pointer-events-auto">
-          <SearchControlPanel
-            searchQuery={searchQuery}
-            resultCount={filtered.length}
-            totalCount={allProfiles.length}
-            onSearchChange={(q) => updateParams({ q })}
-            onOpenRoster={() => setDrawerOpen(true)}
-            showPinnedRoster={pinned}
-          />
+      {!drawerOpen && (
+        <div className="pointer-events-none fixed bottom-3 right-3 top-[4.75rem] z-[60] sm:right-5 lg:bottom-auto lg:right-8 lg:top-1/2 lg:max-h-[calc(100svh-2.5rem)] lg:-translate-y-1/2">
+          <div className="pointer-events-auto h-full max-h-full overflow-y-auto overflow-x-hidden overscroll-contain">
+            <SearchControlPanel
+              searchQuery={searchQuery}
+              resultCount={filtered.length}
+              totalCount={allProfiles.length}
+              onSearchChange={(q) => updateParams({ q })}
+              onOpenRoster={() => setDrawerOpen(true)}
+              showPinnedRoster={pinned}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <section className="relative z-10 box-border h-full overflow-hidden pt-16 sm:pt-[4.5rem]">
         <ProfileCardDeck
@@ -79,7 +81,7 @@ export function SearchPage() {
       </section>
 
       <RosterDrawer
-        open={drawerOpen && !pinned}
+        open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
     </div>
