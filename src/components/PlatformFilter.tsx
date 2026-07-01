@@ -7,6 +7,7 @@ interface PlatformFilterProps {
   onChange: (platform: Platform) => void;
   resultCount: number;
   totalCount: number;
+  variant?: "default" | "glass";
 }
 
 export function PlatformFilter({
@@ -14,11 +15,24 @@ export function PlatformFilter({
   onChange,
   resultCount,
   totalCount,
+  variant = "default",
 }: PlatformFilterProps) {
+  const isGlass = variant === "glass";
+
   return (
-    <div className="flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 pb-3">
+    <div
+      className={
+        isGlass
+          ? "flex flex-col gap-3"
+          : "flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 pb-3"
+      }
+    >
       <div
-        className="flex gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/10"
+        className={`flex gap-1 p-1 ${
+          isGlass
+            ? "glass-input rounded-2xl"
+            : "rounded-xl bg-white/[0.04] border border-white/10"
+        }`}
         role="tablist"
         aria-label="Social platform"
       >
@@ -33,10 +47,10 @@ export function PlatformFilter({
               role="tab"
               aria-selected={isActive}
               onClick={() => onChange(p)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              className={`flex-1 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive
                   ? "text-white shadow-md"
-                  : "text-zinc-500 hover:text-zinc-300"
+                  : "text-zinc-500 hover:text-zinc-200"
               }`}
               style={
                 isActive
@@ -53,9 +67,11 @@ export function PlatformFilter({
         })}
       </div>
 
-      <p className="hidden md:block text-xs text-zinc-600 shrink-0">
-        {resultCount} / {totalCount}
-      </p>
+      {!isGlass && (
+        <p className="hidden md:block text-xs text-zinc-600 shrink-0">
+          {resultCount} / {totalCount}
+        </p>
+      )}
     </div>
   );
 }
