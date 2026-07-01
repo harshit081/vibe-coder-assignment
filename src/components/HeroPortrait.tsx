@@ -5,6 +5,7 @@ interface HeroPortraitProps {
   fullname: string;
   fallbackSrc: string;
   glowColor: string;
+  className?: string;
 }
 
 export function HeroPortrait({
@@ -12,6 +13,7 @@ export function HeroPortrait({
   fullname,
   fallbackSrc,
   glowColor,
+  className = "",
 }: HeroPortraitProps) {
   const { displaySrc, isWikipedia, loading } = useHeroPortrait(
     username,
@@ -19,7 +21,9 @@ export function HeroPortrait({
   );
 
   return (
-    <div className="relative flex justify-center items-end min-h-[280px] sm:min-h-[360px]">
+    <div
+      className={`relative flex min-h-[280px] items-end justify-center sm:min-h-[360px] ${className}`}
+    >
       <div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 w-48 h-48 sm:w-64 sm:h-64 rounded-full blur-3xl opacity-60"
         style={{ background: glowColor }}
