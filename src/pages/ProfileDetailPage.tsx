@@ -2,6 +2,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { AddToListButton } from "@/components/AddToListButton";
 import { HeroPortrait } from "@/components/HeroPortrait";
+import { AnimatedCounter } from "@/components/motion/AnimatedCounter";
+import { Typewriter } from "@/components/motion/Typewriter";
 import { PlatformBadge } from "@/components/PlatformBadge";
 import { RosterDrawer } from "@/components/RosterDrawer";
 import { RosterToolbar } from "@/components/RosterToolbar";
@@ -9,11 +11,7 @@ import { VideoBackground } from "@/components/layout/VideoBackground";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import type { FullUserProfile, Platform, ProfileDetailResponse } from "@/types";
 import { getPlatformTheme } from "@/theme/platformThemes";
-import {
-  formatEngagementRate,
-  formatFollowers,
-  getAudienceCountLabel,
-} from "@/utils/formatters";
+import { buildAnimatedStats } from "@/utils/profileStats";
 import { isDetailedProfile, loadProfileByUsername } from "@/utils/profileLoader";
 import { buildSearchUrl, parsePlatformParamNullable } from "@/utils/platformParams";
 
@@ -28,46 +26,6 @@ function resolvePlatform(
     return profileType as Platform;
   }
   return null;
-}
-
-function buildStats(user: FullUserProfile, platform: Platform | null) {
-  const stats: { label: string; value: string; primary?: boolean }[] = [
-    {
-      label: platform ? getAudienceCountLabel(platform, true) : "Followers",
-      value: formatFollowers(user.followers),
-    },
-    {
-      label: "Engagement",
-      value: formatEngagementRate(user.engagement_rate),
-    },
-  ];
-
-  if (user.posts_count !== undefined) {
-    stats.push({ label: "Posts", value: user.posts_count.toLocaleString() });
-  }
-  if (user.avg_likes !== undefined) {
-    stats.push({ label: "Avg Likes", value: formatFollowers(user.avg_likes) });
-  }
-  if (user.avg_comments !== undefined) {
-    stats.push({
-      label: "Avg Comments",
-      value: formatFollowers(user.avg_comments),
-    });
-  }
-  if (user.avg_views !== undefined && user.avg_views > 0) {
-    stats.push({ label: "Avg Views", value: formatFollowers(user.avg_views) });
-  }
-  if (user.engagements !== undefined) {
-    stats.push({
-      label: "Engagements",
-      value: formatFollowers(user.engagements),
-    });
-  }
-
-  return stats.map((stat, index) => ({
-    ...stat,
-    primary: index < 3,
-  }));
 }
 
 function PageShell({ children }: { children: ReactNode }) {
@@ -156,7 +114,7 @@ export function ProfileDetailPage() {
   const theme = platform ? getPlatformTheme(platform) : null;
   const backUrl = buildSearchUrl(platform ?? queryPlatform);
   const hasDetailedData = isDetailedProfile(username);
-  const stats = buildStats(user, platform);
+  const stats = buildAnimatedStats(user, platform);
 
   return (
     <PageShell>
@@ -264,7 +222,11 @@ export function ProfileDetailPage() {
               <div className="space-y-5 px-6 py-6 sm:px-8 sm:py-8">
                 {user.description && (
                   <p className="max-w-3xl text-base leading-relaxed text-white/70 sm:text-lg">
-                    {user.description}
+                    <Typewriter
+                      text={user.description}
+                      delay={0.1}
+                      speed={0.012}
+                    />
                   </p>
                 )}
 
@@ -330,7 +292,16 @@ export function ProfileDetailPage() {
                         stat.primary ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"
                       }`}
                     >
-                      {stat.value}
+                      {stat.counter ? (
+                        <AnimatedCounter
+                          value={stat.counter.value}
+                          decimals={stat.counter.decimals}
+                          suffix={stat.counter.suffix}
+                          prefix={stat.counter.prefix}
+                        />
+                      ) : (
+                        stat.staticValue
+                      )}
                     </p>
                   </div>
                 ))}
