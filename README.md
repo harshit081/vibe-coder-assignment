@@ -3,7 +3,7 @@
 Influencer discovery app rebuilt as a polished React experience: 3D cylinder deck browsing, glassmorphism UI, persistent campaign roster, and full-page creator profiles.
 
 **Repository:** [https://github.com/harshit081/vibe-coder-assignment](https://github.com/harshit081/vibe-coder-assignment)  
-**Live demo:** *(not deployed — optional bonus)*
+**Live demo:** [https://vibe-coder-assignment-ruddy.vercel.app/](https://vibe-coder-assignment-ruddy.vercel.app/)
 
 ---
 
@@ -244,7 +244,7 @@ src/
 - [x] Public GitHub repository: [https://github.com/harshit081/vibe-coder-assignment](https://github.com/harshit081/vibe-coder-assignment)
 - [x] README documents changes, libraries, assumptions, trade-offs, and remaining work
 - [x] Meaningful git commit history
-- [ ] Live deployment URL *(optional bonus)*
+- [x] Live deployment URL: [https://vibe-coder-assignment-ruddy.vercel.app/](https://vibe-coder-assignment-ruddy.vercel.app/) *(bonus)*
 
 ---
 

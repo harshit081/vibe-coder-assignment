@@ -403,7 +403,7 @@ Newest entries first.
 - [x] Public GitHub repo URL shared before deadline
 - [x] README describes: changes, libraries, assumptions, trade-offs, remaining improvements
 - [x] Meaningful git commit history
-- [ ] *(Optional)* Live deployment URL in README
+- [x] *(Optional)* Live deployment URL in README
 
 ---
 
