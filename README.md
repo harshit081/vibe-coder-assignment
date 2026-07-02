@@ -14,9 +14,18 @@ npm install
 npm run dev      # http://localhost:5173
 npm run build    # production build
 npm run lint     # ESLint
+npm run test:run # unit tests (Vitest)
+npm run test:coverage # optional coverage report
 ```
 
 Verified **2 July 2026**: `npm run build` and `npm run lint` both pass.
+
+### Testing
+
+- **Runner**: Vitest
+- **Unit tests**: `npm run test:run`
+- **Coverage**: `npm run test:coverage` (outputs an HTML report)
+- **Test locations**: `src/utils/*.test.ts` (pure logic: sorting/export/filtering)
 
 ---
 
@@ -198,7 +207,7 @@ Detailed structure and changelog: `[DEVELOPMENT.md](DEVELOPMENT.md)`
 | Wikipedia + CSS cutout vs WASM background removal | Avoids heavy `@imgly/background-removal` bundle for assignment scope   |
 | Portal DnD previews to `document.body`            | Fixes invisible drag clones inside `overflow: hidden` glass containers |
 | Deleted starter components                        | Cleaner codebase; history preserved in git commits                     |
-| No deployment yet                                 | Core assignment complete; deploy is optional bonus                     |
+| Vercel deployment (bonus)                         | Extra polish; not required by assignment                               |
 
 
 ---
@@ -208,10 +217,11 @@ Detailed structure and changelog: `[DEVELOPMENT.md](DEVELOPMENT.md)`
 If I had more time:
 
 1. **Route lazy loading** — `React.lazy` for `SearchPage` / `ProfileDetailPage` to reduce initial bundle below 500 KB
-2. **Deploy** — Vercel/Netlify with preview URL
-3. **Tests** — unit tests for `rosterSort`, `rosterExport`, `dataHelpers` filter logic
-4. **Accessibility pass** — keyboard navigation for cylinder deck, focus trap audit on drawer/dialog
-5. **Image optimization** — responsive `srcset` for hero portraits
+2. **Bundle chunking** — split heavier UI logic (deck/roster/motion) into separate chunks and/or tune Vite chunking strategy
+3. **Test expansion** — add tests for stores (`selectedListStore` / `rosterUiStore`), `profileLoader`, and a small UI smoke test for the roster download dialog
+4. **Accessibility pass** — keyboard navigation for cylinder deck, focus trap audit on drawer/dialog, and focus-visible styling checks
+5. **Image optimization** — responsive `srcset` for hero portraits + preload strategy for the active creator
+6. **Performance polish** — consider virtualization for long rosters (if data grows beyond the provided 30 profiles)
 
 ---
 
@@ -221,15 +231,21 @@ If I had more time:
 
 ```
 src/
-├── pages/           SearchPage, ProfileDetailPage
+├── pages/
+│   ├── SearchPage.tsx
+│   └── ProfileDetailPage.tsx
 ├── components/
-│   ├── deck/        Cylinder carousel + expanded showcase
-│   ├── search/      SearchControlPanel
-│   ├── motion/      AnimatedCounter, Typewriter
-│   └── layout/      VideoBackground
-├── store/           selectedListStore, rosterUiStore
-├── utils/           formatters, profileLoader, rosterExport, rosterSort, …
-└── assets/data/     search + profile JSON
+│   ├── deck/                 # 3D cylinder carousel + expanded overlay
+│   ├── search/               # SearchControlPanel
+│   ├── motion/               # AnimatedCounter, Typewriter
+│   ├── layout/               # VideoBackground
+│   └── Roster*.tsx           # sidebar/drawer/panel/toolbar/icons/download dialog
+├── store/                    # Zustand stores (persisted roster + UI prefs)
+├── utils/                    # formatters, profileLoader, rosterSort/export, wikipedia, …
+│   ├── rosterSort.test.ts
+│   ├── rosterExport.test.ts
+│   └── dataHelpers.test.ts
+└── assets/data/              # search + profile JSON
 ```
 
 ---
@@ -240,6 +256,7 @@ src/
 
 - [x] `npm run build` passes
 - [x] `npm run lint` passes
+- [x] `npm run test:run` passes
 - [x] App runs without errors
 - [x] Public GitHub repository: [https://github.com/harshit081/vibe-coder-assignment](https://github.com/harshit081/vibe-coder-assignment)
 - [x] README documents changes, libraries, assumptions, trade-offs, and remaining work
