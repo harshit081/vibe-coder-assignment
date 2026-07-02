@@ -122,6 +122,30 @@ h3 {
   scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
 
+.glass-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.glass-select:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.glass-select:focus-visible {
+  outline: none;
+  color: rgba(253, 164, 175, 0.95);
+}
+
+.glass-select option {
+  background: #0a0a0f;
+  color: #f4f4f5;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .glass-panel {
   background: linear-gradient(
     145deg,

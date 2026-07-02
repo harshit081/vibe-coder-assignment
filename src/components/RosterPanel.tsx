@@ -10,6 +10,7 @@ import { GripIcon } from "@/components/RosterIcons";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useSelectedListStore } from "@/store/selectedListStore";
+import { useRosterUiStore } from "@/store/rosterUiStore";
 import { getPlatformTheme } from "@/theme/platformThemes";
 import { getDraggableId } from "@/utils/selectedProfileId";
 import { formatFollowers, getAudienceCountLabel } from "@/utils/formatters";
@@ -23,6 +24,7 @@ export function RosterPanel({ className = "", compact = false }: RosterPanelProp
   const profiles = useSelectedListStore((state) => state.profiles);
   const removeProfile = useSelectedListStore((state) => state.removeProfile);
   const reorderProfiles = useSelectedListStore((state) => state.reorderProfiles);
+  const setSortBy = useRosterUiStore((state) => state.setSortBy);
 
   const handleDragStart = () => {
     document.body.style.overflowX = "hidden";
@@ -32,6 +34,7 @@ export function RosterPanel({ className = "", compact = false }: RosterPanelProp
     document.body.style.overflowX = "";
     if (!result.destination) return;
     reorderProfiles(result.source.index, result.destination.index);
+    setSortBy("custom");
   };
 
   if (profiles.length === 0) {

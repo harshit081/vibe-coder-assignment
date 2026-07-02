@@ -2,12 +2,17 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Platform, SelectedProfile, UserProfileSummary } from "@/types";
 import { getSelectedProfileId } from "@/utils/selectedProfileId";
+import {
+  sortRosterProfiles,
+  type RosterSortOption,
+} from "@/utils/rosterSort";
 
 interface SelectedListState {
   profiles: SelectedProfile[];
   addProfile: (profile: UserProfileSummary, platform: Platform) => boolean;
   removeProfile: (id: string) => void;
   reorderProfiles: (startIndex: number, endIndex: number) => void;
+  sortProfiles: (sortBy: RosterSortOption) => void;
   clearList: () => void;
   isSelected: (platform: Platform, username: string) => boolean;
 }
@@ -50,6 +55,12 @@ export const useSelectedListStore = create<SelectedListState>()(
 
         set((state) => ({
           profiles: reorder(state.profiles, startIndex, endIndex),
+        }));
+      },
+
+      sortProfiles: (sortBy) => {
+        set((state) => ({
+          profiles: sortRosterProfiles(state.profiles, sortBy),
         }));
       },
 
