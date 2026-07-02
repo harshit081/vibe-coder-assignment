@@ -16,9 +16,10 @@ import { formatFollowers, getAudienceCountLabel } from "@/utils/formatters";
 
 interface RosterPanelProps {
   className?: string;
+  compact?: boolean;
 }
 
-export function RosterPanel({ className = "" }: RosterPanelProps) {
+export function RosterPanel({ className = "", compact = false }: RosterPanelProps) {
   const profiles = useSelectedListStore((state) => state.profiles);
   const removeProfile = useSelectedListStore((state) => state.removeProfile);
   const reorderProfiles = useSelectedListStore((state) => state.reorderProfiles);
@@ -128,11 +129,13 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
                           @{item.profile.username}
                           <VerifiedBadge verified={item.profile.is_verified} />
                         </p>
-                        <p className="mt-1 truncate text-[10px] tabular-nums text-white/30">
-                          {formatFollowers(item.profile.followers)}{" "}
-                          {getAudienceCountLabel(item.platform)} ·{" "}
-                          <span className="capitalize">{item.platform}</span>
-                        </p>
+                        {!compact && (
+                          <p className="mt-1 truncate text-[10px] tabular-nums text-white/30">
+                            {formatFollowers(item.profile.followers)}{" "}
+                            {getAudienceCountLabel(item.platform)} ·{" "}
+                            <span className="capitalize">{item.platform}</span>
+                          </p>
+                        )}
                       </div>
 
                       <button

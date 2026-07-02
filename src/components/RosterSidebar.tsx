@@ -6,12 +6,14 @@ interface RosterSidebarProps {
   className?: string;
   titleId?: string;
   onClose?: () => void;
+  compact?: boolean;
 }
 
 export function RosterSidebar({
   className = "",
   titleId,
   onClose,
+  compact = false,
 }: RosterSidebarProps) {
   const profiles = useSelectedListStore((state) => state.profiles);
   const clearList = useSelectedListStore((state) => state.clearList);
@@ -70,7 +72,7 @@ export function RosterSidebar({
       </div>
 
       <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden px-3 py-3">
-        <RosterPanel className="w-full min-w-0" />
+        <RosterPanel className="w-full min-w-0" compact={compact} />
       </div>
     </aside>
   );

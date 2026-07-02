@@ -77,7 +77,7 @@ export function SearchControlPanel({
 
       {showPinnedRoster && (
         <div className="glass-card flex h-[min(320px,calc(100svh-11rem))] min-h-[140px] min-w-0 flex-col overflow-hidden rounded-2xl">
-          <RosterSidebar className="min-h-0 flex-1" />
+          <RosterSidebar className="min-h-0 flex-1" compact />
         </div>
       )}
     </div>
