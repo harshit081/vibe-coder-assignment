@@ -119,10 +119,10 @@ Two focused stores (no React Context):
 
 
 
-### 6. Performance — **Partial**
+### 6. Performance — **Done**
 
 - Profile JSON lazy-loaded per file via Vite `import.meta.glob` (each profile is its own chunk)
-- Main JS bundle ~532 KB gzip ~169 KB — acceptable for assignment scope; route-level `React.lazy` would be the next optimization
+- Route-level lazy loading via `React.lazy` + `Suspense` for `SearchPage` and `ProfileDetailPage` — initial JS chunk is now ~234 KB (gzip ~75 KB) and the previous 500 KB warning is gone
 
 
 
@@ -222,9 +222,8 @@ Detailed structure and changelog: `[DEVELOPMENT.md](DEVELOPMENT.md)`
 
 If I had more time:
 
-1. **Route lazy loading** — `React.lazy` for `SearchPage` / `ProfileDetailPage` to reduce initial bundle below 500 KB
-2. **Bundle chunking** — split heavier UI logic (deck/roster/motion) into separate chunks and/or tune Vite chunking strategy
-3. **Test expansion** — add tests for stores (`selectedListStore` / `rosterUiStore`), `profileLoader`, and a small UI smoke test for the roster download dialog
+1. **Bundle chunking** — further split heavier UI logic (deck/roster/motion) into separate chunks and/or tune Vite chunking strategy beyond route-splitting
+2. **Test expansion** — add tests for stores (`selectedListStore` / `rosterUiStore`), `profileLoader`, and a small UI smoke test for the roster download dialog
 4. **Accessibility pass** — keyboard navigation for cylinder deck, focus trap audit on drawer/dialog, and focus-visible styling checks
 5. **Image optimization** — responsive `srcset` for hero portraits + preload strategy for the active creator
 6. **Performance polish** — consider virtualization for long rosters (if data grows beyond the provided 30 profiles)
@@ -237,6 +236,7 @@ If I had more time:
 
 ```
 src/
+├── App.tsx                  # Route-level lazy loading (Search/Profile)
 ├── pages/
 │   ├── SearchPage.tsx
 │   └── ProfileDetailPage.tsx

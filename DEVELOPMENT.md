@@ -27,7 +27,7 @@
 | 3   | Zustand state management           | Done    | `selectedListStore` + `rosterUiStore` with localStorage persist                                    |
 | 4   | Select profile & Add to List       | Done    | Add, dedupe, view, remove, reorder, pin, download, sort                                            |
 | 5   | Improve code quality & structure   | Done    | Dead starter components removed; roster/deck split into focused modules                            |
-| 6   | Optimize performance               | Partial | Profile JSON code-split via `import.meta.glob`; main chunk ~535 KB (no route lazy-load yet)        |
+| 6   | Optimize performance               | Done    | Route-level lazy loading (React.lazy/Suspense). Initial chunk ~234 KB (gzip ~75 KB); warning removed |
 | 7   | Libraries as needed                | Done    | `zustand`, `@hello-pangea/dnd`, `framer-motion`, `motion`; `vitest` for tests                      |
 | —   | `npm run build` passes             | Done    | Verified 2 Jul 2026                                                                                |
 | —   | `npm run lint` passes              | Done    | Verified 2 Jul 2026                                                                                |
@@ -211,6 +211,15 @@ Newest entries first.
 
 ### 2026-07-02 — Responsive / mobile pass & expanded card polish
 
+### 2026-07-02 — Route-level code splitting (simple win)
+
+- Lazy-loaded `SearchPage` and `ProfileDetailPage` from `App.tsx` using `React.lazy` + `Suspense` fallback.
+- Build output now emits separate chunks: `index` (~234 KB), `SearchPage` (~26 KB), `ProfileDetailPage` (~139 KB).
+
+**Verification:** `npm run build`, `npm run lint`, `npm run test:run` pass.
+
+---
+
 **Mobile layout (`< 1024px`)**
 
 - `SearchPage`: search + roster moved to a fixed **bottom control bar**; floating right sidebar and pinned roster are now desktop-only (`lg`).
@@ -377,7 +386,7 @@ Newest entries first.
 7. ~~Add unit tests (Vitest) for core utils.~~
 8. ~~Responsive / mobile pass.~~
 9. ~~Deploy to Vercel.~~
-10. *(Optional)* Route-level lazy loading to shrink main chunk.
+10. *(Optional)* Bundle chunk tuning / manual chunks (if needed beyond route-splitting).
 11. *(Optional)* Expand tests to stores + a component smoke test.
 
 ---
