@@ -32,7 +32,9 @@ export function AddToListButton({
   };
 
   const sizeClasses =
-    size === "md" ? "px-5 py-2.5 text-sm" : "px-3.5 py-1.5 text-xs";
+    size === "md"
+      ? "px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm"
+      : "px-3 py-1.5 text-[11px] sm:px-3.5 sm:text-xs";
 
   if (isSelected) {
     return (

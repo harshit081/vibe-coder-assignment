@@ -58,21 +58,36 @@ export function SearchPage() {
       </div>
 
       {!drawerOpen && (
-        <div className="pointer-events-none fixed bottom-3 right-3 top-[4.75rem] z-[60] sm:right-5 lg:bottom-auto lg:right-8 lg:top-1/2 lg:max-h-[calc(100svh-2.5rem)] lg:-translate-y-1/2">
-          <div className="pointer-events-auto h-full max-h-full overflow-y-auto overflow-x-hidden overscroll-contain">
-            <SearchControlPanel
-              searchQuery={searchQuery}
-              resultCount={filtered.length}
-              totalCount={allProfiles.length}
-              onSearchChange={(q) => updateParams({ q })}
-              onOpenRoster={() => setDrawerOpen(true)}
-              showPinnedRoster={pinned}
-            />
+        <>
+          <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[60] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 lg:hidden">
+            <div className="pointer-events-auto mx-auto max-w-lg">
+              <SearchControlPanel
+                searchQuery={searchQuery}
+                resultCount={filtered.length}
+                totalCount={allProfiles.length}
+                onSearchChange={(q) => updateParams({ q })}
+                onOpenRoster={() => setDrawerOpen(true)}
+                showPinnedRoster={false}
+              />
+            </div>
           </div>
-        </div>
+
+          <div className="pointer-events-none fixed bottom-3 right-3 top-[4.75rem] z-[60] hidden lg:block lg:bottom-auto lg:right-8 lg:top-1/2 lg:max-h-[calc(100svh-2.5rem)] lg:-translate-y-1/2">
+            <div className="pointer-events-auto h-full max-h-full overflow-y-auto overflow-x-hidden overscroll-contain">
+              <SearchControlPanel
+                searchQuery={searchQuery}
+                resultCount={filtered.length}
+                totalCount={allProfiles.length}
+                onSearchChange={(q) => updateParams({ q })}
+                onOpenRoster={() => setDrawerOpen(true)}
+                showPinnedRoster={pinned}
+              />
+            </div>
+          </div>
+        </>
       )}
 
-      <section className="relative z-10 box-border h-full overflow-hidden pt-16 sm:pt-[4.5rem]">
+      <section className="relative z-10 box-border h-full overflow-hidden pt-16 pb-[5.25rem] sm:pt-[4.5rem] lg:pb-0">
         <ProfileCardDeck
           key={platform}
           profiles={filtered}

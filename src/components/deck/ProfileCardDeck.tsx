@@ -67,10 +67,17 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
   const [metrics, setMetrics] = useState<CylinderMetrics>(() => {
     const w = window.innerWidth;
     const h = window.innerHeight;
+    const isMobile = w < 1024;
     const heightFactor = Math.min(1, Math.max(0.62, h / 820));
-    let cardW = Math.round(w * 0.14 + 118);
-    cardW = Math.round(cardW * heightFactor);
-    cardW = Math.min(280, Math.max(168, cardW));
+    let cardW: number;
+    if (isMobile) {
+      // Mobile: keep cards readable (bigger), but we’ll keep typography smaller in the card UI.
+      cardW = Math.round(Math.min(176, Math.max(132, w * 0.34)));
+    } else {
+      cardW = Math.round(w * 0.14 + 118);
+      cardW = Math.round(cardW * heightFactor);
+      cardW = Math.min(280, Math.max(168, cardW));
+    }
     return { cardW, cardH: Math.round(cardW * 1.72) };
   });
 
@@ -96,11 +103,17 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
     const w = window.innerWidth;
     const h = window.innerHeight;
     setViewportW(w);
+    const isMobile = w < 1024;
     const heightFactor = Math.min(1, Math.max(0.62, h / 820));
 
-    let cardW = Math.round(w * 0.14 + 118);
-    cardW = Math.round(cardW * heightFactor);
-    cardW = Math.min(280, Math.max(168, cardW));
+    let cardW: number;
+    if (isMobile) {
+      cardW = Math.round(Math.min(176, Math.max(132, w * 0.34)));
+    } else {
+      cardW = Math.round(w * 0.14 + 118);
+      cardW = Math.round(cardW * heightFactor);
+      cardW = Math.min(280, Math.max(168, cardW));
+    }
     const cardH = Math.round(cardW * 1.72);
 
     setMetrics({ cardW, cardH });
@@ -373,7 +386,7 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
       )}
 
       {expandedProfile && (
-        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="pointer-events-auto">
             <ExpandedProfileShowcase
               summary={expandedProfile}
@@ -436,8 +449,9 @@ export function ProfileCardDeck({ profiles, platform }: ProfileCardDeckProps) {
         </div>
       </div>
 
-      <p className="pointer-events-none absolute inset-x-0 bottom-2 z-20 text-center text-[11px] uppercase tracking-[0.2em] text-white/30">
-        Drag or scroll to orbit · hover for stats · click card to open
+      <p className="pointer-events-none absolute inset-x-0 bottom-14 z-20 px-3 text-center text-[10px] uppercase tracking-[0.18em] text-white/30 sm:bottom-2 sm:text-[11px] sm:tracking-[0.2em] lg:bottom-2">
+        <span className="lg:hidden">Swipe to browse · tap to open</span>
+        <span className="hidden lg:inline">Drag or scroll to orbit · hover for stats · click card to open</span>
       </p>
     </div>
   );

@@ -40,9 +40,9 @@ export function RosterDrawer({ open, onClose }: RosterDrawerProps) {
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="pointer-events-auto relative z-10 flex h-full w-full max-w-[380px] flex-col outline-none animate-slide-in-right"
+        className="pointer-events-auto relative z-10 flex h-full w-full max-w-full flex-col outline-none animate-slide-in-right sm:max-w-[380px]"
       >
-        <div className="glass-card flex min-h-0 flex-1 flex-col overflow-hidden rounded-l-2xl border-y border-l border-white/15">
+        <div className="glass-card flex min-h-0 flex-1 flex-col overflow-hidden rounded-none border border-white/15 sm:rounded-l-2xl sm:border-y sm:border-l">
           <RosterSidebar
             className="min-h-0 flex-1"
             titleId={titleId}

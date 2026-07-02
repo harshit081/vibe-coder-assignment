@@ -18,7 +18,7 @@ npm run test:run # unit tests (Vitest)
 npm run test:coverage # optional coverage report
 ```
 
-Verified **2 July 2026**: `npm run build` and `npm run lint` both pass.
+Verified **2 July 2026**: `npm run build`, `npm run lint`, and `npm run test:run` all pass.
 
 ### Testing
 
@@ -45,6 +45,11 @@ Verified **2 July 2026**: `npm run build` and `npm run lint` both pass.
 - Sort by name, subscribers, or platform
 - Export as text summary or full JSON
 - Persists to `localStorage` across sessions
+
+**Mobile UX**
+
+- Bottom search + roster control bar (no cramped floating sidebar)
+- Drawer uses full width on small screens; pinned roster is desktop-only
 
 Sample data:
 
@@ -84,6 +89,7 @@ Full bug log: `[DEVELOPMENT.md](DEVELOPMENT.md#known-starter-issues)`
 - **Profile page:** dedicated full-page layout (not a modal), About + Performance sections, platform-themed glass UI
 - **Roster:** glass outer shell, compact pinned mode, accessible drawer with backdrop dismiss
 - **Motion:** animated stat counters, typewriter bio, deck interactions
+- **Responsive pass:** smaller typography and controls on mobile, expanded card uses a denser performance grid to avoid horizontal crowding
 
 
 

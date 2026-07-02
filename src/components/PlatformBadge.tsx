@@ -11,10 +11,10 @@ export function PlatformBadge({ platform, className = "" }: PlatformBadgeProps) 
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white shadow-lg ${theme.badge} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-white shadow-lg sm:px-3 sm:py-1 sm:text-xs ${theme.badge} ${className}`}
     >
       <span
-        className="w-1.5 h-1.5 rounded-full bg-white/90"
+        className="h-1.5 w-1.5 rounded-full bg-white/90"
         aria-hidden="true"
       />
       {theme.label}

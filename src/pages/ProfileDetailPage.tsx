@@ -134,11 +134,11 @@ export function ProfileDetailPage() {
         />
       )}
 
-      <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
+      <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 sm:gap-3">
           <Link
             to={backUrl}
-            className="glass-bubble inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white/75 transition-colors hover:text-white"
+            className="glass-bubble inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium text-white/75 transition-colors hover:text-white sm:px-4 sm:text-sm"
           >
             ← Discovery
           </Link>
@@ -149,41 +149,41 @@ export function ProfileDetailPage() {
         </div>
       </header>
 
-      <main className="pb-16 pt-24 sm:pt-28">
+      <main className="pb-16 pt-20 sm:pt-24 sm:pb-16 lg:pt-28">
         <section className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="grid items-end gap-10 lg:grid-cols-[minmax(260px,40%)_1fr] lg:gap-14 xl:gap-16">
+          <div className="grid items-end gap-7 sm:gap-10 lg:grid-cols-[minmax(260px,40%)_1fr] lg:gap-14 xl:gap-16">
             <div className="animate-fade-up">
               <HeroPortrait
                 username={user.username}
                 fullname={user.fullname}
                 fallbackSrc={user.picture}
                 glowColor={theme?.glow ?? "rgba(255,255,255,0.2)"}
-                className="min-h-[320px] sm:min-h-[420px] lg:min-h-[min(72vh,640px)] lg:justify-start"
+                className="min-h-[260px] sm:min-h-[420px] lg:min-h-[min(72vh,640px)] lg:justify-start"
               />
             </div>
 
-            <div className="animate-fade-up-delay-1 space-y-6 pb-4 lg:pb-10">
-              <div className="space-y-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/40">
+            <div className="animate-fade-up-delay-1 space-y-4 pb-4 sm:space-y-6 lg:pb-10">
+              <div className="space-y-3 sm:space-y-4">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/40 sm:text-[11px] sm:tracking-[0.28em]">
                   Creator profile
                 </p>
                 {theme && (
                   <div
-                    className="h-1 w-14 rounded-full"
+                    className="h-0.5 w-10 rounded-full sm:h-1 sm:w-14"
                     style={{ background: theme.gradient }}
                     aria-hidden="true"
                   />
                 )}
-                <h1 className="font-display text-4xl font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl xl:text-7xl">
+                <h1 className="font-display text-2xl font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl xl:text-7xl">
                   {user.fullname}
                 </h1>
-                <p className="text-lg text-white/70 sm:text-xl">
+                <p className="text-base text-white/70 sm:text-xl">
                   @{user.username}
                   <VerifiedBadge verified={user.is_verified} />
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {platform && (
                   <AddToListButton
                     profile={user}
@@ -197,7 +197,7 @@ export function ProfileDetailPage() {
                     href={user.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="glass-bubble inline-flex items-center rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                    className="glass-bubble inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-white/10 sm:px-5 sm:py-2.5 sm:text-sm"
                   >
                     View on platform ↗
                   </a>
@@ -208,20 +208,20 @@ export function ProfileDetailPage() {
         </section>
 
         {(user.description || user.gender || user.age_group) && (
-          <section className="mx-auto mt-10 max-w-6xl px-4 sm:mt-14 sm:px-6">
-            <div className="glass-card overflow-hidden rounded-3xl border border-white/15">
-              <div className="border-b border-white/10 px-6 py-5 sm:px-8">
-                <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
+          <section className="mx-auto mt-8 max-w-6xl px-4 sm:mt-14 sm:px-6">
+            <div className="glass-card overflow-hidden rounded-2xl border border-white/15 sm:rounded-3xl">
+              <div className="border-b border-white/10 px-4 py-4 sm:px-8 sm:py-5">
+                <h2 className="font-display text-xl font-bold text-white sm:text-3xl">
                   About
                 </h2>
-                <p className="mt-1 text-sm text-white/40">
+                <p className="mt-1 text-xs text-white/40 sm:text-sm">
                   Bio and profile details
                 </p>
               </div>
 
-              <div className="space-y-5 px-6 py-6 sm:px-8 sm:py-8">
+              <div className="space-y-4 px-4 py-5 sm:space-y-5 sm:px-8 sm:py-8">
                 {user.description && (
-                  <p className="max-w-3xl text-base leading-relaxed text-white/70 sm:text-lg">
+                  <p className="max-w-3xl text-sm leading-relaxed text-white/70 sm:text-lg">
                     <Typewriter
                       text={user.description}
                       delay={0.1}
@@ -253,29 +253,29 @@ export function ProfileDetailPage() {
           </section>
         )}
 
-        <section className="mx-auto mt-10 max-w-6xl px-4 sm:mt-14 sm:px-6">
-          <div className="glass-card overflow-hidden rounded-3xl border border-white/15">
-            <div className="border-b border-white/10 px-6 py-5 sm:px-8">
-              <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
+        <section className="mx-auto mt-8 max-w-6xl px-4 sm:mt-14 sm:px-6">
+          <div className="glass-card overflow-hidden rounded-2xl border border-white/15 sm:rounded-3xl">
+            <div className="border-b border-white/10 px-4 py-4 sm:px-8 sm:py-5">
+              <h2 className="font-display text-xl font-bold text-white sm:text-3xl">
                 Performance
               </h2>
-              <p className="mt-1 text-sm text-white/40">
+              <p className="mt-1 text-xs text-white/40 sm:text-sm">
                 Audience and engagement metrics for this creator
               </p>
             </div>
 
-            <div className="space-y-6 px-6 py-6 sm:px-8 sm:py-8">
+            <div className="space-y-5 px-4 py-5 sm:space-y-6 sm:px-8 sm:py-8">
               {!hasDetailedData && (
-                <p className="rounded-2xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-200/90">
+                <p className="rounded-2xl border border-amber-500/25 bg-amber-500/10 px-3 py-2.5 text-xs text-amber-200/90 sm:px-4 sm:py-3 sm:text-sm">
                   Limited stats — extended analytics unavailable for this creator.
                 </p>
               )}
 
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
                 {stats.map((stat) => (
                   <div
                     key={stat.label}
-                    className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4"
+                    className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-3 sm:px-4 sm:py-4"
                     style={
                       stat.primary && theme
                         ? {
@@ -284,12 +284,12 @@ export function ProfileDetailPage() {
                         : undefined
                     }
                   >
-                    <p className="text-[11px] font-medium uppercase tracking-wider text-white/45">
+                    <p className="text-[9px] font-medium uppercase tracking-wider text-white/45 sm:text-[11px]">
                       {stat.label}
                     </p>
                     <p
                       className={`mt-1.5 font-bold tabular-nums text-white ${
-                        stat.primary ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"
+                        stat.primary ? "text-xl sm:text-3xl" : "text-lg sm:text-2xl"
                       }`}
                     >
                       {stat.counter ? (

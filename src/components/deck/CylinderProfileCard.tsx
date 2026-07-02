@@ -22,9 +22,9 @@ function BackStat({
   value: string;
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-black/35 px-2.5 py-2 text-center backdrop-blur-sm">
-      <p className="text-[9px] uppercase tracking-wider text-zinc-400">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold tabular-nums text-white">{value}</p>
+    <div className="rounded-lg border border-white/10 bg-black/35 px-2 py-1.5 text-center backdrop-blur-sm sm:rounded-xl sm:px-2.5 sm:py-2">
+      <p className="text-[8px] uppercase tracking-wider text-zinc-400 sm:text-[9px]">{label}</p>
+      <p className="mt-0.5 text-xs font-semibold tabular-nums text-white sm:text-sm">{value}</p>
     </div>
   );
 }
@@ -99,27 +99,27 @@ export function CylinderProfileCard({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
                 {profile.is_verified && (
-                  <span className="absolute top-3 left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500/90 text-[10px] text-white">
+                  <span className="absolute left-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500/90 text-[9px] text-white sm:left-3 sm:top-3 sm:h-6 sm:w-6 sm:text-[10px]">
                     ✓
                   </span>
                 )}
               </div>
 
-              <div className="relative flex h-[38%] flex-col justify-between p-4 pt-3">
+              <div className="relative flex h-[38%] flex-col justify-between p-3 pt-2.5 sm:p-4 sm:pt-3">
                 <div>
-                  <p className="font-display text-base font-bold leading-tight text-white sm:text-lg">
+                  <p className="font-display text-[13px] font-bold leading-tight text-white sm:text-lg">
                     {profile.fullname}
                   </p>
-                  <p className="mt-1 text-xs text-zinc-300 sm:text-sm">
+                  <p className="mt-0.5 text-[10px] text-zinc-300 sm:mt-1 sm:text-sm">
                     @{profile.username}
                     <VerifiedBadge verified={profile.is_verified} />
                   </p>
                 </div>
                 <div>
-                  <p className="text-lg font-semibold tabular-nums text-white">
+                  <p className="text-sm font-semibold tabular-nums text-white sm:text-lg">
                     {formatFollowers(profile.followers)}
                   </p>
-                  <p className="mt-0.5 text-[10px] uppercase tracking-wider text-zinc-500">
+                  <p className="mt-0.5 text-[8px] uppercase tracking-wider text-zinc-500 sm:text-[10px]">
                     {getAudienceCountLabel(platform)}
                   </p>
                 </div>
@@ -131,11 +131,11 @@ export function CylinderProfileCard({
                 data-deck-expand
                 aria-label="Expand profile"
                 title="Expand profile"
-                className="absolute bottom-3 right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full glass-bubble border border-white/20 text-white/90 transition-colors hover:bg-white/15 hover:text-white"
+                className="glass-bubble absolute bottom-2.5 right-2.5 z-20 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 text-white/90 transition-colors hover:bg-white/15 hover:text-white sm:bottom-3 sm:right-3 sm:h-9 sm:w-9"
               >
                 <svg
                   viewBox="0 0 24 24"
-                  className="h-4 w-4"
+                  className="h-3.5 w-3.5 sm:h-4 sm:w-4"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2.2"
@@ -175,34 +175,34 @@ export function CylinderProfileCard({
               aria-hidden="true"
             />
 
-            <div className="relative z-10 flex h-full flex-col p-4 pt-4">
-              <div className="mb-3 flex shrink-0 items-center gap-3">
+            <div className="relative z-10 flex h-full flex-col p-3 pt-3 sm:p-4 sm:pt-4">
+              <div className="mb-2.5 flex shrink-0 items-center gap-2.5 sm:mb-3 sm:gap-3">
                 <ProfilePicture
                   username={profile.username}
                   src={profile.picture}
                   platform={platform}
                   handle={profile.handle}
                   alt={profile.fullname}
-                  className="h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-white/25"
+                  className="h-11 w-11 shrink-0 rounded-full object-cover ring-2 ring-white/25 sm:h-14 sm:w-14"
                 />
                 <div className="min-w-0 text-left">
-                  <p className="truncate font-display text-sm font-bold text-white">
+                  <p className="truncate font-display text-xs font-bold text-white sm:text-sm">
                     {profile.fullname}
                   </p>
-                  <p className="mt-0.5 truncate text-xs text-zinc-300">
+                  <p className="mt-0.5 truncate text-[11px] text-zinc-300 sm:text-xs">
                     @{profile.username}
                     <VerifiedBadge verified={profile.is_verified} />
                   </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1 sm:gap-2">
                 {backStats.map((stat) => (
                   <BackStat key={stat.label} label={stat.label} value={stat.value} />
                 ))}
               </div>
 
-              <p className="mt-auto pt-3 text-center text-[9px] uppercase tracking-[0.14em] text-white/35">
+              <p className="mt-auto pt-2 text-center text-[8px] uppercase tracking-[0.14em] text-white/35 sm:pt-3 sm:text-[9px]">
                 {platform}
               </p>
             </div>

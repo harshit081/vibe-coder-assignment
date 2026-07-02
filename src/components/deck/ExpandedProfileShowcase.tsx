@@ -90,7 +90,7 @@ export function ExpandedProfileShowcase({
 
   return (
     <div
-      className="showcase-panel relative flex h-[min(78vh,580px)] w-[min(calc(100vw-2rem),600px)] flex-col overflow-hidden rounded-2xl border border-white/15 bg-zinc-950 shadow-2xl"
+      className="showcase-panel relative flex max-h-[min(92svh,640px)] w-[min(calc(100vw-1.25rem),500px)] flex-col overflow-hidden overflow-y-auto rounded-2xl border border-white/15 bg-zinc-950 shadow-2xl sm:max-h-[min(78vh,580px)] sm:w-[min(calc(100vw-2rem),600px)]"
       style={{
         boxShadow: `0 40px 120px rgba(0,0,0,0.75), 0 0 60px ${theme.glow}`,
       }}
@@ -105,7 +105,7 @@ export function ExpandedProfileShowcase({
         type="button"
         onClick={onClose}
         aria-label="Close"
-        className="absolute right-4 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-xl text-white transition-colors hover:bg-black/90"
+        className="absolute right-3 top-3 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/70 text-lg text-white transition-colors hover:bg-black/90 sm:right-4 sm:top-4 sm:h-10 sm:w-10 sm:text-xl"
       >
         ×
       </button>
@@ -124,37 +124,37 @@ export function ExpandedProfileShowcase({
         </div>
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col justify-center overflow-hidden border-t border-white/10 sm:border-t-0 sm:border-l sm:border-white/10">
-          <div className="showcase-body flex w-full flex-col gap-4 p-5 sm:p-6">
-            <header className="space-y-2 pr-10">
-              <div className="flex flex-wrap items-center gap-2.5">
+          <div className="showcase-body flex w-full flex-col gap-2.5 p-3.5 sm:gap-4 sm:p-6">
+            <header className="space-y-1 pr-7 sm:space-y-2 sm:pr-10">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
                 <PlatformBadge platform={platform} />
                 {!ready && (
-                  <span className="text-[11px] uppercase tracking-wider text-white/40">
+                  <span className="text-[10px] uppercase tracking-wider text-white/40 sm:text-[11px]">
                     Loading stats…
                   </span>
                 )}
               </div>
-              <h2 className="font-display text-2xl font-bold leading-tight text-white sm:text-[1.65rem]">
+              <h2 className="font-display text-base font-bold leading-tight text-white sm:text-[1.65rem]">
                 {user.fullname}
               </h2>
-              <p className="text-base text-zinc-300">
+              <p className="text-xs text-zinc-300 sm:text-base">
                 @{user.username}
                 <VerifiedBadge verified={user.is_verified} />
               </p>
               {user.description && (
-                <p className="line-clamp-3 text-sm leading-relaxed text-zinc-400">
+                <p className="line-clamp-2 text-[10px] leading-snug text-zinc-400 sm:line-clamp-3 sm:text-sm">
                   {user.description}
                 </p>
               )}
               {(user.gender || user.age_group) && (
-                <div className="flex flex-wrap gap-2 pt-1 text-xs text-zinc-500">
+                <div className="flex flex-wrap gap-1.5 pt-1 text-[11px] text-zinc-500 sm:gap-2 sm:text-xs">
                   {user.gender && (
-                    <span className="rounded-full border border-white/10 px-2.5 py-1">
+                    <span className="rounded-full border border-white/10 px-2 py-0.5 sm:px-2.5 sm:py-1">
                       {user.gender}
                     </span>
                   )}
                   {user.age_group && (
-                    <span className="rounded-full border border-white/10 px-2.5 py-1">
+                    <span className="rounded-full border border-white/10 px-2 py-0.5 sm:px-2.5 sm:py-1">
                       {user.age_group}
                     </span>
                   )}
@@ -163,34 +163,34 @@ export function ExpandedProfileShowcase({
             </header>
 
             {ready && !hasDetailed && (
-              <p className="rounded-xl border border-amber-500/25 bg-amber-500/10 px-4 py-2.5 text-sm text-amber-200/90">
+              <p className="rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-200/90 sm:px-4 sm:py-2.5 sm:text-sm">
                 Limited stats — extended analytics unavailable for this creator.
               </p>
             )}
 
-            <section>
-              <h3 className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-white/45">
+            <section className="min-w-0">
+              <h3 className="font-display text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45 sm:text-sm">
                 Performance
               </h3>
-              <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+              <div className="mt-2 grid grid-cols-3 gap-1.5 sm:mt-3 sm:gap-2.5">
                 {stats.map((stat) => (
                   <div
                     key={stat.label}
-                    className="rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2.5"
+                    className="min-w-0 rounded-lg border border-white/10 bg-white/[0.06] px-1.5 py-1.5 sm:rounded-xl sm:px-3 sm:py-2.5"
                     style={
                       stat.primary
                         ? {
-                            boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 0 24px -10px ${theme.primary}`,
+                            boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 0 20px -12px ${theme.primary}`,
                           }
                         : undefined
                     }
                   >
-                    <p className="text-[11px] font-medium uppercase tracking-wider text-white/45">
+                    <p className="truncate text-[7px] font-medium uppercase tracking-wide text-white/45 sm:text-[11px]">
                       {stat.label}
                     </p>
                     <p
-                      className={`mt-1 font-bold tabular-nums text-white ${
-                        stat.primary ? "text-xl" : "text-base"
+                      className={`mt-0.5 truncate font-bold tabular-nums text-white ${
+                        stat.primary ? "text-xs sm:text-xl" : "text-[11px] sm:text-base"
                       }`}
                     >
                       {stat.value}
@@ -200,11 +200,11 @@ export function ExpandedProfileShowcase({
               </div>
             </section>
 
-            <footer className="flex flex-wrap gap-2 border-t border-white/10 pt-4">
-              <AddToListButton profile={user} platform={platform} size="md" />
+            <footer className="flex flex-wrap gap-1.5 border-t border-white/10 pt-2.5 sm:gap-2 sm:pt-4">
+              <AddToListButton profile={user} platform={platform} size="sm" />
               <Link
                 to={`/profile/${user.username}?platform=${platform}`}
-                className="inline-flex items-center rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                className="inline-flex items-center rounded-full border border-white/20 px-3 py-1.5 text-[11px] font-semibold text-white transition-colors hover:bg-white/10 sm:px-5 sm:py-2.5 sm:text-sm"
               >
                 View more →
               </Link>

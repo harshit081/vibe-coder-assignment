@@ -30,7 +30,9 @@ export function computeOrbitRadius(
   viewportW: number
 ): number {
   const base = metrics.cardW * 1.28 + 150;
-  return Math.min(Math.max(base, 220), viewportW * 0.34);
+  const maxFactor = viewportW < 1024 ? 0.4 : 0.34;
+  const minRadius = viewportW < 1024 ? 160 : 220;
+  return Math.min(Math.max(base, minRadius), viewportW * maxFactor);
 }
 
 export function computeOrbitStageSize(
