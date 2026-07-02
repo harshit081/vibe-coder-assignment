@@ -4,6 +4,7 @@ import {
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { GripIcon } from "@/components/RosterIcons";
 import { ProfilePicture } from "@/components/ProfilePicture";
@@ -59,7 +60,7 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
           <ul
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`w-full min-w-0 space-y-2 overflow-x-hidden ${className}`}
+            className={`roster-scroll w-full min-w-0 max-h-full space-y-2 overflow-y-auto overflow-x-hidden overscroll-contain pr-1 ${className}`}
           >
             {profiles.map((item, index) => {
               const theme = getPlatformTheme(item.platform);
@@ -70,8 +71,9 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
                   draggableId={getDraggableId(item.id)}
                   index={index}
                 >
-                  {(draggableProvided, snapshot) => (
-                    <li
+                  {(draggableProvided, snapshot) => {
+                    const row = (
+                      <li
                       ref={draggableProvided.innerRef}
                       {...draggableProvided.draggableProps}
                       {...draggableProvided.dragHandleProps}
@@ -143,7 +145,12 @@ export function RosterPanel({ className = "" }: RosterPanelProps) {
                         ×
                       </button>
                     </li>
-                  )}
+                    );
+
+                    return snapshot.isDragging
+                      ? createPortal(row, document.body)
+                      : row;
+                  }}
                 </Draggable>
               );
             })}

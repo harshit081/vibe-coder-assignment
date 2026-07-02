@@ -69,7 +69,7 @@ export function RosterSidebar({
         )}
       </div>
 
-      <div className="roster-scroll min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden px-3 py-3">
+      <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden px-3 py-3">
         <RosterPanel className="w-full min-w-0" />
       </div>
     </aside>

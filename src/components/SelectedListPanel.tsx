@@ -4,6 +4,7 @@ import {
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { ProfilePicture } from "@/components/ProfilePicture";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
@@ -97,8 +98,9 @@ export function SelectedListPanel({ embedded = false }: SelectedListPanelProps) 
                       draggableId={getDraggableId(item.id)}
                       index={index}
                     >
-                      {(draggableProvided, snapshot) => (
-                        <li
+                      {(draggableProvided, snapshot) => {
+                        const row = (
+                          <li
                           ref={draggableProvided.innerRef}
                           {...draggableProvided.draggableProps}
                           {...draggableProvided.dragHandleProps}
@@ -163,7 +165,12 @@ export function SelectedListPanel({ embedded = false }: SelectedListPanelProps) 
                             ×
                           </button>
                         </li>
-                      )}
+                        );
+
+                        return snapshot.isDragging
+                          ? createPortal(row, document.body)
+                          : row;
+                      }}
                     </Draggable>
                   );
                 })}
