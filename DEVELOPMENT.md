@@ -17,29 +17,27 @@
 
 ---
 
-
-
 ## Assignment progress
 
 
-| #   | Task                               | Status      | Notes                                                                                       |
-| --- | ---------------------------------- | ----------- | ------------------------------------------------------------------------------------------- |
-| 1   | Find and fix bugs / quality issues | Done        | B1–B11 resolved (see changelog)                                                             |
-| 2   | Redesign UI/UX                     | Done        | Cylinder deck, glass UI, video background, full-page profile                                |
-| 3   | Zustand state management           | Done        | `selectedListStore` + `rosterUiStore` with localStorage persist                             |
-| 4   | Select profile & Add to List       | Done        | Add, dedupe, view, remove, reorder, pin, download, sort                                     |
-| 5   | Improve code quality & structure   | Done        | Dead starter components removed; roster/deck split into focused modules                     |
-| 6   | Optimize performance               | Partial     | Profile JSON code-split via `import.meta.glob`; main chunk ~532 KB (no route lazy-load yet) |
-| 7   | Libraries as needed                | Done        | `zustand`, `@hello-pangea/dnd`, `framer-motion`, `motion`                                   |
-| —   | `npm run build` passes             | Done        | Verified 2 Jul 2026                                                                         |
-| —   | `npm run lint` passes              | Done        | Verified 2 Jul 2026                                                                         |
-| —   | Final README (submission)          | Done        | Submission README written 2 Jul 2026                                                        |
-| —   | Deploy (bonus)                     | Not started | Optional                                                                                    |
+| #   | Task                               | Status  | Notes                                                                                              |
+| --- | ---------------------------------- | ------- | -------------------------------------------------------------------------------------------------- |
+| 1   | Find and fix bugs / quality issues | Done    | B1–B11 resolved (see changelog)                                                                    |
+| 2   | Redesign UI/UX                     | Done    | Cylinder deck, glass UI, video background, full-page profile                                       |
+| 3   | Zustand state management           | Done    | `selectedListStore` + `rosterUiStore` with localStorage persist                                    |
+| 4   | Select profile & Add to List       | Done    | Add, dedupe, view, remove, reorder, pin, download, sort                                            |
+| 5   | Improve code quality & structure   | Done    | Dead starter components removed; roster/deck split into focused modules                            |
+| 6   | Optimize performance               | Partial | Profile JSON code-split via `import.meta.glob`; main chunk ~535 KB (no route lazy-load yet)        |
+| 7   | Libraries as needed                | Done    | `zustand`, `@hello-pangea/dnd`, `framer-motion`, `motion`; `vitest` for tests                      |
+| —   | `npm run build` passes             | Done    | Verified 2 Jul 2026                                                                                |
+| —   | `npm run lint` passes              | Done    | Verified 2 Jul 2026                                                                                |
+| —   | `npm run test:run` passes          | Done    | 9 unit tests (sort/export/filter), verified 2 Jul 2026                                             |
+| —   | Responsive / mobile pass           | Done    | Bottom control bar, full-width drawer, scaled typography, denser expanded card                     |
+| —   | Final README (submission)          | Done    | Submission README written 2 Jul 2026                                                               |
+| —   | Deploy (bonus)                     | Done    | [https://vibe-coder-assignment-ruddy.vercel.app/](https://vibe-coder-assignment-ruddy.vercel.app/) |
 
 
 ---
-
-
 
 ## Tech stack
 
@@ -54,8 +52,6 @@
 | State       | Zustand + persist (`selectedListStore`, `rosterUiStore`)                    |
 | Drag & drop | `@hello-pangea/dnd` (roster reorder)                                        |
 | Motion      | `motion` (AnimatedCounter, Typewriter), `framer-motion` (deck interactions) |
-
-
 
 
 ### Project structure
@@ -116,8 +112,6 @@ src/
     └── profiles/                   # 30 detail JSON files
 ```
 
-
-
 ### Routes
 
 
@@ -128,8 +122,6 @@ src/
 
 
 ---
-
-
 
 ## Known starter issues
 
@@ -153,23 +145,18 @@ Issues identified during initial analysis (intentional bugs / quality gaps in th
 
 ---
 
-
-
 ## Libraries
-
-
 
 ### Added
 
 
-| Package             | Version  | Reason                                           | Date        |
-| ------------------- | -------- | ------------------------------------------------ | ----------- |
-| `@hello-pangea/dnd` | ^18.0.1  | Drag-to-reorder roster; React 19 compatible      | 30 Jun 2026 |
-| `zustand`           | ^5.0.14  | Selected profiles + roster UI state with persist | 30 Jun 2026 |
-| `framer-motion`     | ^12.42.1 | Deck card hover/flip animations                  | 1 Jul 2026  |
-| `motion`            | ^12.42.2 | AnimatedCounter + Typewriter on profile page     | 1 Jul 2026  |
-
-
+| Package                            | Version  | Reason                                           | Date        |
+| ---------------------------------- | -------- | ------------------------------------------------ | ----------- |
+| `@hello-pangea/dnd`                | ^18.0.1  | Drag-to-reorder roster; React 19 compatible      | 30 Jun 2026 |
+| `zustand`                          | ^5.0.14  | Selected profiles + roster UI state with persist | 30 Jun 2026 |
+| `framer-motion`                    | ^12.42.1 | Deck card hover/flip animations                  | 1 Jul 2026  |
+| `motion`                           | ^12.42.2 | AnimatedCounter + Typewriter on profile page     | 1 Jul 2026  |
+| `vitest` (+ `@vitest/coverage-v8`) | ^4.1.9   | Unit tests for pure logic (sort/export/filter)   | 2 Jul 2026  |
 
 
 ### Removed / replaced
@@ -182,26 +169,24 @@ Issues identified during initial analysis (intentional bugs / quality gaps in th
 
 ---
 
-
-
 ## Assumptions
 
 
-| Date        | Assumption                                                                                                                              |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| 30 Jun 2026 | Generated profile JSON uses search data plus estimated extended stats where the search JSON did not include them.                       |
-| 30 Jun 2026 | All 30 search profiles now have detail JSON; summary fallback in `profileLoader` remains as a safety net.                               |
-| 30 Jun 2026 | Duplicate detection uses `platform + username` (case-insensitive username in ID). Same creator on different platforms can appear twice. |
-| 30 Jun 2026 | List order is user-controlled via drag-and-drop and persisted to localStorage.                                                          |
-| 1 Jul 2026  | YouTube cards show **subscribers** (not followers) in deck and roster stats.                                                            |
-| 1 Jul 2026  | Roster download: Text = abstract summary; JSON = full profile objects.                                                                  |
-| 1 Jul 2026  | Roster sort options: name, subscribers, platform (IG → YT → TikTok). Hidden in compact/short roster views.                              |
-| 2 Jul 2026  | Pinned roster is discovery-page only; creator profile page has no roster chrome.                                                        |
+| Date        | Assumption                                                                                                                                      |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| 30 Jun 2026 | Generated profile JSON uses search data plus estimated extended stats where the search JSON did not include them.                               |
+| 30 Jun 2026 | All 30 search profiles now have detail JSON; summary fallback in `profileLoader` remains as a safety net.                                       |
+| 30 Jun 2026 | Duplicate detection uses `platform + username` (case-insensitive username in ID). Same creator on different platforms can appear twice.         |
+| 30 Jun 2026 | List order is user-controlled via drag-and-drop and persisted to localStorage.                                                                  |
+| 1 Jul 2026  | YouTube cards show **subscribers** (not followers) in deck and roster stats.                                                                    |
+| 1 Jul 2026  | Roster download: Text = abstract summary; JSON = full profile objects.                                                                          |
+| 1 Jul 2026  | Roster sort options: name, subscribers, platform (IG → YT → TikTok). Hidden in compact/short roster views.                                      |
+| 2 Jul 2026  | Pinned roster is discovery-page only; creator profile page has no roster chrome.                                                                |
+| 2 Jul 2026  | Mobile breakpoint is `< 1024px` (`lg`): bottom control bar + full-width drawer; desktop keeps the floating right sidebar + pinned roster.       |
+| 2 Jul 2026  | Tests focus on pure logic (`rosterSort`, `rosterExport`, `dataHelpers`) rather than DOM/component rendering, to stay fast and dependency-light. |
 
 
 ---
-
-
 
 ## Trade-offs
 
@@ -214,15 +199,44 @@ Issues identified during initial analysis (intentional bugs / quality gaps in th
 | 1 Jul 2026  | Portal drag previews to `document.body`                                                   | Fixes invisible DnD cards; slightly more DOM complexity              |
 | 1 Jul 2026  | Wikipedia hero + CSS cutout instead of WASM background removal                            | Smaller bundle; good enough visual for assignment scope              |
 | 2 Jul 2026  | Deleted unused starter components instead of keeping for reference                        | Cleaner tree; history preserved in git                               |
+| 2 Jul 2026  | Responsive via Tailwind breakpoints (no separate mobile components/JS)                    | Simple, low-risk before deadline; some class-level duplication       |
+| 2 Jul 2026  | Vitest unit tests scoped to pure utils (no component/RTL tests yet)                       | Fast, minimal setup; UI regressions not covered by tests             |
 
 
 ---
 
-
-
 ## Changelog
 
 Newest entries first.
+
+### 2026-07-02 — Responsive / mobile pass & expanded card polish
+
+**Mobile layout (`< 1024px`)**
+
+- `SearchPage`: search + roster moved to a fixed **bottom control bar**; floating right sidebar and pinned roster are now desktop-only (`lg`).
+- `RosterDrawer`: full-width on mobile, side panel from `sm`.
+- Deck: mobile orbit card sizing tuned; hint text swaps to "Swipe to browse · tap to open".
+
+**Typography / chrome scaling**
+
+- Reduced mobile text and control sizes across deck cards, platform bubbles, `SearchControlPanel`, `AddToListButton`, `PlatformBadge`, `RosterToolbar`, and `ProfileDetailPage`.
+
+**Expanded showcase (`ExpandedProfileShowcase`)**
+
+- Performance grid switched to a denser **3-column** layout on mobile to stop stat boxes eating horizontal space.
+- Kept a generous card height and restored the hero image height (`h-40`) after an over-aggressive trim.
+
+**Verification:** `npm run build`, `npm run lint`, `npm run test:run` pass.
+
+---
+
+### 2026-07-02 — Unit tests (Vitest)
+
+- Added `vitest` + `@vitest/coverage-v8`; scripts `test`, `test:run`, `test:coverage`.
+- Configured `vitest/config` in `vite.config.ts` (node environment, `src/**/*.test.ts`).
+- Tests for pure logic: `rosterSort` (name/subscribers/platform), `rosterExport` (text + JSON shape), `dataHelpers` (filter/lookup/labels). **9 tests passing.**
+
+---
 
 ### 2026-07-02 — Dead code cleanup & doc sync
 
@@ -241,8 +255,6 @@ Newest entries first.
 
 ---
 
-
-
 ### 2026-07-02 — Roster download & sorting
 
 **Download**
@@ -256,8 +268,6 @@ Newest entries first.
 
 ---
 
-
-
 ### 2026-07-02 — Compact pinned roster
 
 - Pinned roster shows name + username only (no follower line)
@@ -265,16 +275,12 @@ Newest entries first.
 
 ---
 
-
-
 ### 2026-07-01 — DnD fixes (invisible card + auto-scroll)
 
 - Drag preview portaled to `document.body` when `snapshot.isDragging`
 - Scroll container moved to Droppable `<ul>` in `RosterPanel` (not outer sidebar wrapper)
 
 ---
-
-
 
 ### 2026-07-01 — Profile page motion & stats
 
@@ -284,8 +290,6 @@ Newest entries first.
 
 ---
 
-
-
 ### 2026-07-01 — Full-page creator profile redesign
 
 - `ProfileDetailPage` — dedicated page layout with video background and glass sections
@@ -293,8 +297,6 @@ Newest entries first.
 - No roster sidebar on profile route
 
 ---
-
-
 
 ### 2026-07-01 — Roster UI rework (glass deck aesthetic)
 
@@ -305,8 +307,6 @@ Newest entries first.
 - `rosterUiStore` for pin + sort preference
 
 ---
-
-
 
 ### 2026-07-01 — Cylinder deck & expanded showcase
 
@@ -326,16 +326,12 @@ Newest entries first.
 
 ---
 
-
-
 ### 2026-06-30 — Search screen full-width redesign
 
 - Roster moved to slide-over drawer; full-viewport discovery layout
 - Poster-style grid iteration (later superseded by cylinder deck)
 
 ---
-
-
 
 ### 2026-06-30 — Showoff UI/UX redesign
 
@@ -344,23 +340,17 @@ Newest entries first.
 
 ---
 
-
-
 ### 2026-06-30 — Zustand store & Add to List feature
 
 - `selectedListStore` with persist; `AddToListButton`; initial `SelectedListPanel` + `Layout` (later removed)
 
 ---
 
-
-
 ### 2026-06-30 — Profile JSON data for all search cards
 
 - 24 new profile JSON files; 3 YouTube username fixes; all 30 profiles covered
 
 ---
-
-
 
 ### 2026-06-30 — Starter bug fixes (B1–B10)
 
@@ -370,15 +360,11 @@ Newest entries first.
 
 ---
 
-
-
 ### 2026-06-30 — Project setup & analysis
 
 - Created `DEVELOPMENT.md`; replaced `react-beautiful-dnd` with `@hello-pangea/dnd`
 
 ---
-
-
 
 ## Remaining work (high level)
 
@@ -388,12 +374,13 @@ Newest entries first.
 4. ~~Full UI/UX redesign (cylinder deck, glass roster, profile page).~~
 5. ~~Remove dead starter components.~~
 6. ~~Update submission `README.md` from this file.~~
-7. *(Optional)* Route-level lazy loading to shrink main chunk (~532 KB warning).
-8. *(Optional)* Deploy to Vercel / Netlify / GitHub Pages.
+7. ~~Add unit tests (Vitest) for core utils.~~
+8. ~~Responsive / mobile pass.~~
+9. ~~Deploy to Vercel.~~
+10. *(Optional)* Route-level lazy loading to shrink main chunk.
+11. *(Optional)* Expand tests to stores + a component smoke test.
 
 ---
-
-
 
 ## Submission checklist (copy to README when done)
 
@@ -406,8 +393,6 @@ Newest entries first.
 - [x] *(Optional)* Live deployment URL in README
 
 ---
-
-
 
 ## Interview prep notes
 
